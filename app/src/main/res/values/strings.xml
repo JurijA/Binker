@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Binker</string>
+    <string name="login_text_register"> <u>Register here</u></string>
+    <string name="login_notify_not_found">"Fuck you"</string>
+    <string name="login_notify_found">"Welcome homo"</string>
+    <string name="login_hint_username">"Username"</string>
+    <string name="login_hint_password">"Password"</string>
+    <string name="login_text_remember_me">"Remember Me"</string>
+    <string name="login_text_new_here">"New here?"</string>
+    <string name="login_button">"Log in"</string>
+</resources>
