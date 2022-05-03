@@ -1,19 +1,17 @@
 package be.kuleuven.binker;
 
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-
-import android.util.Log;
-import android.view.View;
-//import android.widget.Button;
-import android.widget.TextView;
 import com.android.volley.Request;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
@@ -22,9 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Set;
 import java.util.stream.Collectors;
-
 
 import be.kuleuven.objects.User;
 
@@ -65,12 +62,13 @@ public class LoginActivity extends AppCompatActivity {
         JsonArrayRequest responds = getCredentials();
         requestQueue.add(responds);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public boolean userExists(@NonNull User user){
-        List<User> names =  listUsers
+        Set<User> names = listUsers
                 .stream()
                 .filter(user::equals)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         return !names.isEmpty();
     }
 
