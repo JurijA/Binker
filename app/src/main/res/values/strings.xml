@@ -1,4 +1,7 @@
 <resources>
+    <string name="qr_code">qr_code</string>
+    <string name="enter_your_info">Enter your info</string>
+    <string name="generate_qr_code">Generate QR Code</string>
     <string name="app_name">Binker</string>
     <string name="login_text_register"> <u>Register here</u></string>
     <string name="login_notify_not_found">"Fuck you"</string>
@@ -8,4 +11,24 @@
     <string name="login_text_remember_me">"Remember Me"</string>
     <string name="login_text_new_here">"New here?"</string>
     <string name="login_button">"Log in"</string>
+    <string name="facebook_app_id">372046701535216</string>
+    <string name="fb_login_protocol_scheme">fb372046701535216</string>
+    <string name="facebook_client_token">479f44bdda5f30022a764f34deb00ae5</string>
+    <string name="fb_login_success">"facebook is fucking nice"</string>
+    <string name="fb_login_fail">"facebook sucks anyway"</string>
+    <string name="login_success">"Welcome back :)"</string>
+    <string name="login_fail">"Wrong credentials"</string>
+    <string name="register_success">"Welcome Binker ;)"</string>
+    <string name="register_title">"Register"</string>
+    <string name="register_hint_email">"Email</string>
+    <string name="register_hint_confirm_password">"Confirm Password"</string>
+    <string name="register_go">"Join"</string>
+    <string name="Binker_de_beer">BinkerDeBeer</string>
+    <string name="register_user_already_exists">"User already exists"</string>
+    <string name="register_passwords_didnt_match">"Passwords didn't match"</string>
+    <string name="register_password_too_short">"Password has to be at least 8 characters long"</string>
+    <string name="register_unvalid_username">"Put in valid user name"</string>
+    <string name="register_unvalid_email">"Put in valid email"</string>
+    <string name="register_email_already_used">"This email is already used"</string>
+
 </resources>
