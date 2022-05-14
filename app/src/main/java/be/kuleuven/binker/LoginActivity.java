@@ -129,8 +129,8 @@ public class LoginActivity extends AppCompatActivity {
         User user = new User(inputUsername, inputHashedPassword);
         System.out.println(user);
         if (userExists(user)) {
-            Intent intent = new Intent(this, ContactActivity.class);
-            intent.putExtra("email", user.getEmail());
+            Intent intent = new Intent(this, GroupActivity.class);
+            //intent.putExtra("email", user.getEmail());
             startActivity(intent);
             Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
         } else {
