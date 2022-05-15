@@ -23,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,7 +68,6 @@ public class RegisterActivity extends AppCompatActivity {
         txtPassword = findViewById(R.id.txtRegisterPass);
         txtConfirmPassword = findViewById(R.id.txtRegisterPassConf);
         txtEmail = findViewById(R.id.txtRegisterEmail);
-        txtRegisterNotify = findViewById(R.id.txtRegisterNotify);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -83,14 +81,14 @@ public class RegisterActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onBtnRegister_Clicked(View caller) {
-
+        System.out.println(AMOUNT_USERS);
         String username = txtUsername.getText() + "";
         String password = sha256(txtPassword.getText() + "");
         String conf_pass = sha256(txtConfirmPassword.getText() + "");
         String email = txtEmail.getText() + "";
         System.out.println(getFreeID(AMOUNT_USERS));
         User user = new User(
-                getFreeID(AMOUNT_USERS),
+                0,
                 username,
                 password + "",
                 "pic",
@@ -99,13 +97,15 @@ public class RegisterActivity extends AppCompatActivity {
                 "link",
                 "location",
                 email + "");
-        if (txtPassword.getText().length() >= 8) {
+        if (txtPassword.getText().length() >= 0) {
             if (!user.getName().equals("")) {
                 if (password.equals(conf_pass)) {
-                    user.setPassword(password);
                     if (isValidEmailAddress(txtEmail.getText() + "")) {
                         if (mailIsUnique(txtEmail.getText() + "")) {
+                            user.setPassword(password);
+                            user.setId(getFreeID(AMOUNT_USERS));
                             addUser(user);
+                            System.out.println("user: " + user);
                             Toast.makeText(this, R.string.register_success, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(this, LoginActivity.class);
                             startActivity(intent);
@@ -132,11 +132,12 @@ public class RegisterActivity extends AppCompatActivity {
     // [1,5,8,12, 45,99] -> 13 (size = 6 --> 6*2 = 12 next free = 13)
     // a lot of algorithms use this technique of doubling: hashmap,
     public Integer getFreeID(Integer someId) {
-        if (idExists(someId)) {
-            System.out.println(someId + " -> bestaat al");
-            getFreeID(someId + 1);
+        System.out.println("begin " + someId);
+        if (!idIsUnique(someId)) {
+            getFreeID(2 * someId);
         }
-        return 2 * someId;
+        System.out.println("free id" + someId);
+        return someId;
     }
 
     public boolean isValidEmailAddress(String email) {
@@ -147,12 +148,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public boolean idExists(Integer amountUsers) {
+    public boolean idIsUnique(Integer id) {
         Set<User> ids = listUsers
                 .stream()
-                .filter(person -> Objects.equals(person.getId(), amountUsers))
+                .filter(p -> p.getId().equals(id))
                 .collect(Collectors.toSet());
-        return !ids.isEmpty();
+        return ids.isEmpty();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

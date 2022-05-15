@@ -30,8 +30,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import be.kuleuven.objects.User;
@@ -96,9 +96,12 @@ public class LoginActivity extends AppCompatActivity {
                                 (o, response) -> {
                                     try {
                                         if (o != null) {
-                                            txtNotify.setText(o.getString("name"));
+                                            Toast.makeText(LoginActivity.this, "Successfully logged in with Facebook", Toast.LENGTH_SHORT).show();
                                             User user = new User(Integer.parseInt(o.getString("id")), o.getString("name"));
                                             addUser(user);
+                                            Intent intent = new Intent(LoginActivity.this, ContactActivity.class);
+                                            intent.putExtra("User", user);
+                                            startActivity(intent);
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -127,10 +130,11 @@ public class LoginActivity extends AppCompatActivity {
         String inputUsername = txtLoginUser.getText() + "";
         String inputHashedPassword = sha256(txtLoginPassword.getText() + "");
         User user = new User(inputUsername, inputHashedPassword);
-        System.out.println(user);
-        if (userExists(user)) {
-            Intent intent = new Intent(this, GroupActivity.class);
-            //intent.putExtra("email", user.getEmail());
+        if (userExists(user).containsKey(true)) {
+            user = userExists(user).get(true);
+            Intent intent = new Intent(this, ContactActivity.class);
+            System.out.println(user);
+            intent.putExtra("User", user);
             startActivity(intent);
             Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
         } else {
@@ -145,14 +149,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public boolean userExists(@NonNull User user) {
-        System.out.println(listUsers);
-        Set<User> names = listUsers
+    public HashMap<Boolean, User> userExists(@NonNull User user) {
+        List<User> names = listUsers
                 .stream()
                 .filter(user::equalsLogin)
-                .collect(Collectors.toSet());
-        System.out.println(names);
-        return !names.isEmpty();
+                .collect(Collectors.toList());
+        HashMap<Boolean, User> hashMap = new HashMap<>();
+        hashMap.put(!names.isEmpty(), names.get(0));
+        return hashMap;
     }
 
     public void addUser(User user) {
