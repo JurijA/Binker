@@ -12,20 +12,20 @@ import be.kuleuven.objects.User;
 
 public class ContactActivity extends AppCompatActivity {
 
-    private final User user = getIntent().getParcelableExtra("User");
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-        System.out.println("intent= " + getIntent().toString());
+        user = getIntent().getParcelableExtra("User");
+        System.out.println("user contact: " + user);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onAddFriends_Clicked(View caller) {
-        //System.out.println(user.toString());
         Intent intent = new Intent(this, AddFriendsActivity.class);
-        //intent.putExtra("User", user);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 }

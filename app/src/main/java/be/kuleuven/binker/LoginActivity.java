@@ -30,7 +30,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -130,10 +129,13 @@ public class LoginActivity extends AppCompatActivity {
         String inputUsername = txtLoginUser.getText() + "";
         String inputHashedPassword = sha256(txtLoginPassword.getText() + "");
         User user = new User(inputUsername, inputHashedPassword);
-        if (userExists(user).containsKey(true)) {
-            user = userExists(user).get(true);
+        if (userExists(user)) {
+            user = listUsers.stream()
+                    .filter(user::equalsLogin)
+                    .collect(Collectors.toList())
+                    .get(0);
+            System.out.println("user login:" + user);
             Intent intent = new Intent(this, ContactActivity.class);
-            System.out.println(user);
             intent.putExtra("User", user);
             startActivity(intent);
             Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
@@ -149,14 +151,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public HashMap<Boolean, User> userExists(@NonNull User user) {
+    public Boolean userExists(@NonNull User user) {
         List<User> names = listUsers
                 .stream()
                 .filter(user::equalsLogin)
                 .collect(Collectors.toList());
-        HashMap<Boolean, User> hashMap = new HashMap<>();
-        hashMap.put(!names.isEmpty(), names.get(0));
-        return hashMap;
+        return !names.isEmpty();
     }
 
     public void addUser(User user) {

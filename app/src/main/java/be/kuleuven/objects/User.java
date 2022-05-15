@@ -6,9 +6,9 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -38,6 +38,12 @@ public class User implements Parcelable {
         }
     }
 
+    protected User(Parcel in) {
+        this.id = in.readInt();
+        for (String key : keys) {
+            info.put(key, in.readString());
+        }
+    }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
@@ -51,6 +57,36 @@ public class User implements Parcelable {
         }
     };
 
+    public static String sha256(final String base) {
+        try {
+            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            final byte[] hash = digest.digest(base.getBytes(StandardCharsets.UTF_8));
+            final StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                final String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1)
+                    hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(getId());
+        out.writeString(getName());
+        out.writeString(getPassword());
+        out.writeString(getProfilePicture());
+        out.writeString(getBirthday());
+        out.writeString(getGender());
+        out.writeString(getLink());
+        out.writeString(getLocation());
+        out.writeString(getEmail());
+    }
+
 
     public boolean equalsLogin(Object o) {
         if (this == o) return true;
@@ -60,14 +96,7 @@ public class User implements Parcelable {
                 && Objects.equals(info.get("password"), user.getPassword());
     }
 
-    protected User(Parcel in) {
-        keys = in.createStringArray();
-        if (in.readByte() == 0) {
-            id = null;
-        } else {
-            id = in.readInt();
-        }
-    }
+
 
     public boolean equalsRegister(Object o) {
         if (this == o) return true;
@@ -76,10 +105,6 @@ public class User implements Parcelable {
         return Objects.equals(info.get("email"), user.getEmail());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(info.get("name"), info.get("password"), info.get("profilePicture"));
-    }
 
     public Integer getId() {
         return this.id;
@@ -89,54 +114,47 @@ public class User implements Parcelable {
         this.id = id;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     public String getPassword() {
-        return info.get("password") == null ? "null" : info.get("password");
+        return info.get("password") == null ? "password" : info.get("password");
     }
 
-    public void setPassword(String password) {
-        info.put("password", password);
-    }
-
-    public User getUser(User o) {
-        if (equalsLogin(o)) return this;
-        return null;
-    }
 
     public void setName(String name) {
         info.put("name", name);
     }
 
-    public String getName() {
-        return info.get("name") == null ? "null" : info.get("name");
-
+    public void setPassword(String password) {
+        info.put("password", sha256(password));
     }
 
     public void setBirthday(String birthday) {
         info.put("birthday", birthday);
     }
 
-    public String getBirthday() {
+    public String getName() {
+        return info.get("name") == null ? "name" : info.get("name");
 
-
-        return info.get("birthday") == null ? "null" : info.get("birthday");
     }
 
     public void setGender(String gender) {
         info.put("gender", gender);
     }
 
-    public String getGender() {
-
-        return info.get("gender") == null ? "null" : info.get("gender");
+    public String getBirthday() {
+        return info.get("birthday") == null ? "birthday" : info.get("birthday");
     }
 
     public void setLink(String link) {
         info.put("link", link);
     }
 
-    public String getLink() {
-
-        return info.get("link") == null ? "null" : info.get("link");
+    public String getGender() {
+        return info.get("gender") == null ? "g" : info.get("gender");
     }
 
     public void setLocation(String location) {
@@ -147,54 +165,44 @@ public class User implements Parcelable {
         return info;
     }
 
-    public String getLocation() {
-        return info.get("location") == null ? "null" : info.get("location");
+    public String getLink() {
+
+        return info.get("link") == null ? "link" : info.get("link");
     }
 
     public void setEmail(String email) {
         info.put("email", email);
     }
 
-    public String getEmail() {
-        return info.get("email") == null ? "null" : info.get("email");
+    public String getLocation() {
+        return info.get("location") == null ? "location" : info.get("location");
     }
 
     public void setProfilePicture(String profilePicture) {
         info.put("profilePicture", profilePicture);
     }
 
+    public String getEmail() {
+        return info.get("email") == null ? "email" : info.get("email");
+    }
+
+    public String getProfilePicture() {
+        return info.get("profilePicture") == null ? "pic" : info.get("profilePicture");
+    }
+
     @NonNull
     @Override
     public String toString() {
         return "User{" +
-                "birthday='" + getBirthday() + '\'' +
+                "id='" + getId() + '\'' +
                 ", name='" + getName() + '\'' +
-                ", gender='" + getGender() + '\'' +
                 ", password='" + getPassword() + '\'' +
+                ", profilePicture='" + getProfilePicture() + '\'' +
+                ", birthday='" + getBirthday() + '\'' +
+                ", gender='" + getGender() + '\'' +
                 ", link='" + getLink() + '\'' +
                 ", location='" + getLocation() + '\'' +
                 ", email='" + getEmail() + '\'' +
-                ", id='" + getId() + '\'' +
-                ", profilePicture='" + getProfilePicture() + '\'' +
                 '}' + "\n";
     }
-
-    public String getProfilePicture() {
-        return info.get("profilePicture") == null ? "null" : info.get("profilePicture");
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    // write your object's data to the passed-in Parcel
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeInt(getId());
-
-        List<String> list = new ArrayList<>(info.values());
-        out.writeStringList(list);
-    }
-
 }
