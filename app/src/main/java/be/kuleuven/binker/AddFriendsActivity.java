@@ -1,6 +1,7 @@
 
 package be.kuleuven.binker;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -20,6 +21,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import be.kuleuven.dependencies.QRGContents;
+import be.kuleuven.dependencies.QRGEncoder;
 import be.kuleuven.objects.Capture;
 import be.kuleuven.objects.User;
 
@@ -69,6 +72,7 @@ public class AddFriendsActivity extends AppCompatActivity {
         intentIntegrator.initiateScan();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -76,13 +80,13 @@ public class AddFriendsActivity extends AppCompatActivity {
                 requestCode, resultCode, data
         );
         if (intentResult.getContents() != null) {
+
             AlertDialog.Builder builder = new AlertDialog.Builder(
                     AddFriendsActivity.this
             );
-            builder.setTitle("Result");
+            builder.setTitle("Add friend?");
+            builder.setIcon(R.mipmap.ic_binker_launcher_round);
             builder.setMessage(intentResult.getContents());
-            System.out.println(user);
-            System.out.println(intentResult.getContents());
             builder.setPositiveButton("OK",
                     (dialogInterface, i) -> dialogInterface.dismiss()
             );

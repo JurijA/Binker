@@ -1,6 +1,8 @@
 package be.kuleuven.binker;
 
+import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -24,9 +26,29 @@ import java.util.stream.Collectors;
 import be.kuleuven.objects.User;
 
 public class DatabaseHandler extends AppCompatActivity {
+    private static final String PREFIX_URL = "https://studev.groept.be/api/a21pt408/";
     private static final List<User> listUsers = new ArrayList<>();
-    private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt408/";
-    private static Integer USERS_TABLE_SIZE;
+    public static Integer USERS_TABLE_SIZE = 0;
+    private static DatabaseHandler instance = null;
+    private RequestQueue requestQueue;
+
+    DatabaseHandler(Context context) {
+        requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+    }
+
+    // https://docs.oracle.com/javase/tutorial/essential/concurrency/syncmeth.html
+    public static synchronized DatabaseHandler getInstance(Context context) {
+        if (instance == null) instance = new DatabaseHandler(context);
+        return instance;
+    }
+
+    public static synchronized DatabaseHandler getInstance() {
+        if (null == instance) {
+            throw new IllegalStateException(DatabaseHandler.class.getSimpleName() +
+                    " is not initialized, call getInstance(...) first");
+        }
+        return instance;
+    }
 
     public static String sha256(final String base) {
         try {
@@ -48,7 +70,7 @@ public class DatabaseHandler extends AppCompatActivity {
     public JsonArrayRequest addUser(User user) {
         return new JsonArrayRequest(
                 Request.Method.GET,
-                "https://studev.groept.be/api/a21pt408/addUser/"
+                PREFIX_URL + "addUser/"
                         + user.getId() + "/"
                         + user.getName() + "" + "/"
                         + user.getPassword() + "" + "/"
@@ -64,11 +86,46 @@ public class DatabaseHandler extends AppCompatActivity {
 
     }
 
+    public void getUsers() {
+        requestQueue = Volley.newRequestQueue(this);
+        String requestURL = PREFIX_URL + "selectUsers";
+        requestQueue.add(
+                new JsonArrayRequest(
+                        Request.Method.POST,
+                        requestURL,
+                        null,
+                        response -> {
+                            try {
+                                for (int i = 0; i < response.length(); i++) {
+                                    User user = new User(
+                                            response.getJSONObject(i).getInt("idUser"),
+                                            response.getJSONObject(i).get("userName") + "",
+                                            response.getJSONObject(i).get("userPassword") + "",
+                                            response.getJSONObject(i).get("userProfilePicture") + "",
+                                            response.getJSONObject(i).get("userBirthday") + "",
+                                            response.getJSONObject(i).get("userGender") + "",
+                                            response.getJSONObject(i).get("userLink") + "",
+                                            response.getJSONObject(i).get("userLocation") + "",
+                                            response.getJSONObject(i).get("userEmail") + ""
+                                    );
+                                    listUsers.add(user);
+                                }
+
+                            } catch (Exception e) {
+                                Log.d("JSONObject: ", e.getMessage(), e);
+                            }
+                        }
+                        ,
+                        error -> Log.d("JSONError: ", error.getMessage(), error)
+
+                ));
+    }
+
     public void getAmountUsers() {
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(DatabaseHandler.this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                SUBMIT_URL + "getUsersSize",
+                PREFIX_URL + "getUsersSize",
                 null, response -> {
             JSONObject jsonObject;
             try {

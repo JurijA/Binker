@@ -36,9 +36,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="55dp"
-        android:layout_marginTop="184dp"
+        android:layout_marginTop="170dp"
         android:layout_marginEnd="222dp"
-        android:layout_marginBottom="528dp"
+        android:layout_marginBottom="542dp"
         android:text="@string/add_friend_qr" />
 
     <ImageButton

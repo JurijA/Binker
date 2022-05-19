@@ -1,4 +1,4 @@
-package be.kuleuven.binker;
+package be.kuleuven.dependencies;
 
 import android.graphics.Bitmap;
 import android.util.Log;

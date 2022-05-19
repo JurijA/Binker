@@ -39,9 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final List<User> listUsers = new ArrayList<>();
     private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
     private static Integer USER_AMOUNT;
-    private static Integer FREE_ID;
     CallbackManager callbackManager;
-    private TextView txtLoginUser, txtLoginPassword, txtNotify;
+    private TextView txtLoginUser, txtLoginPassword;
     private RequestQueue requestQueue;
     private AccessToken accessToken;
 
@@ -65,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
         getAmountUsers();
@@ -75,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         accessToken = AccessToken.getCurrentAccessToken();
         txtLoginUser = findViewById(R.id.txtLoginUser);
         txtLoginPassword = findViewById(R.id.txtLoginPassword);
-        txtNotify = findViewById(R.id.txtNotify);
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -120,6 +117,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        USER_AMOUNT = DatabaseHandler.USERS_TABLE_SIZE;
+        System.out.println(USER_AMOUNT);
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
