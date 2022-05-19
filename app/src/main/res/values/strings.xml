@@ -30,5 +30,8 @@
     <string name="register_unvalid_username">"Put in valid user name"</string>
     <string name="register_unvalid_email">"Put in valid email"</string>
     <string name="register_email_already_used">"This email is already used"</string>
+    <string name="add_friend_title">"Add Friend"</string>
+    <string name="add_friend_qr">"Your QR code"</string>
+
 
 </resources>

@@ -137,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
             System.out.println("user login:" + user);
             Intent intent = new Intent(this, ContactActivity.class);
             intent.putExtra("User", user);
+
             startActivity(intent);
             Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
         } else {
