@@ -59,8 +59,8 @@
 
     <ImageButton
         android:id="@+id/Btn_FriendProfile"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:onClick="onBtnInfo_Clicked"
@@ -69,12 +69,12 @@
         app:srcCompat="@drawable/ic_chatinfo" />
 
     <ImageButton
-        android:id="@+id/Btn_BackToFriendActivity"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/Btn_BackToContacts"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:onClick="onBtnBackToGroups_Clicked"
+        android:onClick="onBtnBackToContacts_Clicked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back_right" />
@@ -82,12 +82,12 @@
     <TextView
         android:id="@+id/TxtFriendName"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_marginTop="16dp"
         android:text="Friend.name"
         android:textAlignment="center"
         android:textSize="28sp"
-        app:layout_constraintEnd_toStartOf="@+id/Btn_BackToFriendActivity"
+        app:layout_constraintEnd_toStartOf="@+id/Btn_BackToContacts"
         app:layout_constraintStart_toEndOf="@+id/Btn_FriendProfile"
         app:layout_constraintTop_toTopOf="parent" />
 

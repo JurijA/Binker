@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this, "Successfully logged in with Facebook", Toast.LENGTH_SHORT).show();
                                             User user = new User(Integer.parseInt(o.getString("id")), o.getString("name"));
                                             addUser(user);
-                                            Intent intent = new Intent(LoginActivity.this, ContactActivity.class);
+                                            Intent intent = new Intent(LoginActivity.this, FriendActivity.class);
                                             intent.putExtra("User", user);
                                             startActivity(intent);
                                         }
