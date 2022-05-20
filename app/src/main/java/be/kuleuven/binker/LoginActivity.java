@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                     .collect(Collectors.toList())
                     .get(0);
             System.out.println("user login:" + user);
-            Intent intent = new Intent(this, ContactActivity.class);
+            Intent intent = new Intent(this, FriendActivity.class);
             intent.putExtra("User", user);
 
             startActivity(intent);

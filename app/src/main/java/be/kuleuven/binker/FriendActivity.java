@@ -23,4 +23,14 @@ public class FriendActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddFriendsActivity.class);
         startActivity(intent);
     }
+
+    public void onBtnFriendChat_Clicked(View caller){
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
+    }
+
+    public void OnBtnPhotos_Clicked (View caller){
+        Intent intent = new Intent(this, PhotoActivity.class);
+        startActivity(intent);
+    }
 }
