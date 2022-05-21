@@ -6,8 +6,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -57,22 +55,6 @@ public class User implements Parcelable {
         }
     };
 
-    public static String sha256(final String base) {
-        try {
-            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            final byte[] hash = digest.digest(base.getBytes(StandardCharsets.UTF_8));
-            final StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                final String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1)
-                    hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
@@ -129,7 +111,7 @@ public class User implements Parcelable {
     }
 
     public void setPassword(String password) {
-        info.put("password", sha256(password));
+        info.put("password", password);
     }
 
     public void setBirthday(String birthday) {

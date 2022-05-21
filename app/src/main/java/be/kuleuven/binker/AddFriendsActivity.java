@@ -21,6 +21,9 @@ import com.google.zxing.WriterException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import be.kuleuven.dependencies.QRGContents;
 import be.kuleuven.dependencies.QRGEncoder;
 import be.kuleuven.objects.Capture;
@@ -34,6 +37,7 @@ public class AddFriendsActivity extends AppCompatActivity {
     private User user;
     private ImageView qrCodeUser;
     private ImageView btnAddFriend;
+    List<User> friends = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,18 +85,19 @@ public class AddFriendsActivity extends AppCompatActivity {
         );
         if (intentResult.getContents() != null) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(
-                    AddFriendsActivity.this
-            );
-            builder.setTitle("Add friend?");
-            builder.setIcon(R.mipmap.ic_binker_launcher_round);
-            builder.setMessage(intentResult.getContents());
-            builder.setPositiveButton("OK",
-                    (dialogInterface, i) -> dialogInterface.dismiss()
-            );
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddFriendsActivity.this)
+                    .setTitle("Add friend?")
+                    .setIcon(R.mipmap.ic_binker_launcher_round)
+                    .setMessage(intentResult.getContents())
+                    .setPositiveButton("OK",
+                            (dialogInterface, i) -> {
+
+                            }
+                    );
             builder.show();
         } else {
             Toast.makeText(getApplicationContext(), "Didn't find user", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

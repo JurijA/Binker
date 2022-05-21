@@ -1,9 +1,10 @@
 package be.kuleuven.binker;
 
+import static be.kuleuven.objects.DataBaseHandler.sha256;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,10 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -26,49 +24,32 @@ import com.facebook.login.LoginResult;
 
 import org.json.JSONException;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final List<User> listUsers = new ArrayList<>();
+    private static List<User> listUsers = new ArrayList<>();
     private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
     private static Integer USER_AMOUNT;
     CallbackManager callbackManager;
     private TextView txtLoginUser, txtLoginPassword;
     private RequestQueue requestQueue;
     private AccessToken accessToken;
+    DataBaseHandler dataBaseHandler = new DataBaseHandler(LoginActivity.this);
 
-    public static String sha256(final String base) {
-        try {
-            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            final byte[] hash = digest.digest(base.getBytes(StandardCharsets.UTF_8));
-            final StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                final String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1)
-                    hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getAmountUsers();
-        getUsers();
-
+        dataBaseHandler.getUsers();
+        dataBaseHandler.getAmountUsers();
         callbackManager = CallbackManager.Factory.create();
         accessToken = AccessToken.getCurrentAccessToken();
         txtLoginUser = findViewById(R.id.txtLoginUser);
@@ -77,12 +58,13 @@ public class LoginActivity extends AppCompatActivity {
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
-                    public void onError(@NonNull FacebookException e) {
-
+                    public void onCancel() {
+                        Toast.makeText(LoginActivity.this, "You canceled register", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onCancel() {
+                    public void onError(@NonNull FacebookException e) {
+                        Toast.makeText(LoginActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -94,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                                         if (o != null) {
                                             Toast.makeText(LoginActivity.this, "Successfully logged in with Facebook", Toast.LENGTH_SHORT).show();
                                             User user = new User(Integer.parseInt(o.getString("id")), o.getString("name"));
-                                            addUser(user);
+                                            dataBaseHandler.addUser(user);
                                             Intent intent = new Intent(LoginActivity.this, ContactActivity.class);
                                             intent.putExtra("User", user);
                                             startActivity(intent);
@@ -117,31 +99,39 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        USER_AMOUNT = DatabaseHandler.USERS_TABLE_SIZE;
-        System.out.println(USER_AMOUNT);
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onBtnLogin_Clicked(View caller) {
+        listUsers = DataBaseHandler.userList;
+        USER_AMOUNT = DataBaseHandler.USER_AMOUNT;
+
         String inputUsername = txtLoginUser.getText() + "";
         String inputHashedPassword = sha256(txtLoginPassword.getText() + "");
+
         User user = new User(inputUsername, inputHashedPassword);
-        if (userExists(user)) {
-            user = listUsers.stream()
-                    .filter(user::equalsLogin)
-                    .collect(Collectors.toList())
-                    .get(0);
-            System.out.println("user login:" + user);
+
+        if (DataBaseHandler.userExists(user)) {
+
+            user = getUserFromLogin(user);
+
             Intent intent = new Intent(this, ContactActivity.class);
             intent.putExtra("User", user);
-
             startActivity(intent);
+
             Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, R.string.login_fail, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public User getUserFromLogin(User user) {
+        return listUsers.stream()
+                .filter(user::equalsLogin)
+                .collect(Collectors.toList())
+                .get(0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -150,86 +140,4 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public Boolean userExists(@NonNull User user) {
-        List<User> names = listUsers
-                .stream()
-                .filter(user::equalsLogin)
-                .collect(Collectors.toList());
-        return !names.isEmpty();
-    }
-
-    public void addUser(User user) {
-        requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(
-                new JsonArrayRequest(
-                        Request.Method.GET,
-                        SUBMIT_URL + "addUser/"
-                                + user.getId() + "/"
-                                + user.getName() + "" + "/"
-                                + user.getPassword() + "" + "/"
-                                + user.getProfilePicture() + "" + "/"
-                                + user.getBirthday() + "" + "/"
-                                + user.getGender() + "" + "/"
-                                + user.getLocation() + "" + "/"
-                                + user.getLink() + "" + "/"
-                                + user.getEmail() + ""
-                        ,
-                        null, null, null
-                ));
-    }
-
-    public void getAmountUsers() {
-        requestQueue = Volley.newRequestQueue(this);
-        String url = SUBMIT_URL + "getUsersSize";
-        requestQueue.add(
-                new JsonArrayRequest(
-                        Request.Method.POST,
-                        url,
-                        null,
-                        response -> {
-                            try {
-                                USER_AMOUNT = Integer.parseInt(response.getJSONObject(0).get("SIZE") + "");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }, error -> Log.d("JSONError: ", error.getMessage(), error)
-                )
-        );
-    }
-
-    public void getUsers() {
-        requestQueue = Volley.newRequestQueue(this);
-        String requestURL = SUBMIT_URL + "selectUsers";
-        requestQueue.add(
-                new JsonArrayRequest(
-                        Request.Method.POST,
-                        requestURL,
-                        null,
-                        response -> {
-                            try {
-                                for (int i = 0; i < response.length(); i++) {
-                                    User user = new User(
-                                            response.getJSONObject(i).getInt("idUser"),
-                                            response.getJSONObject(i).get("userName") + "",
-                                            response.getJSONObject(i).get("userPassword") + "",
-                                            response.getJSONObject(i).get("userProfilePicture") + "",
-                                            response.getJSONObject(i).get("userBirthday") + "",
-                                            response.getJSONObject(i).get("userGender") + "",
-                                            response.getJSONObject(i).get("userLink") + "",
-                                            response.getJSONObject(i).get("userLocation") + "",
-                                            response.getJSONObject(i).get("userEmail") + ""
-                                    );
-                                    listUsers.add(user);
-                                }
-
-                            } catch (Exception e) {
-                                Log.d("JSONObject: ", e.getMessage(), e);
-                            }
-                        }
-                        ,
-                        error -> Log.d("JSONError: ", error.getMessage(), error)
-
-                ));
-    }
 }

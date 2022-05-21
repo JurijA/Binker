@@ -18,7 +18,7 @@
     <string name="fb_login_fail">"facebook sucks anyway"</string>
     <string name="login_success">"Welcome back :)"</string>
     <string name="login_fail">"Wrong credentials"</string>
-    <string name="register_success">"Welcome Binker ;)"</string>
+    <string name="register_success">"Welcome "</string>
     <string name="register_title">"Register"</string>
     <string name="register_hint_email">"Email</string>
     <string name="register_hint_confirm_password">"Confirm Password"</string>
