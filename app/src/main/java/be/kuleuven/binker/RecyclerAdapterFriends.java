@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
+public class RecyclerAdapterFriends extends RecyclerView.Adapter<RecyclerAdapterFriends.ViewHolder>{
 
     @NonNull
     @Override

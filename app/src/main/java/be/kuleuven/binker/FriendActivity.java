@@ -2,6 +2,8 @@ package be.kuleuven.binker;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Build;
@@ -16,6 +18,8 @@ public class FriendActivity extends AppCompatActivity {
 
     private User user;
     private static List<User> listUsers;
+    RecyclerView recyclerView;
+    RecyclerAdapterFriends recyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,10 @@ public class FriendActivity extends AppCompatActivity {
         listUsers = getIntent().getParcelableExtra("Users");
         System.out.println("conact: " + listUsers);
         System.out.println("user contact: " + user);
+        recyclerView = findViewById(R.id.recyclerViewFriends);
+        recyclerAdapter = new RecyclerAdapterFriends();
+        recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void onBtnGroups_Clicked (View caller){
