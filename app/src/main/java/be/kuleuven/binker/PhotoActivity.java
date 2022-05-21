@@ -11,19 +11,20 @@ import android.view.View;
 public class PhotoActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    RecyclerAdapter recyclerAdapter;
+    RecyclerAdapterPhotos recyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
-        recyclerView = findViewById(R.id.recyclerviewphoto);
-        recyclerAdapter = new RecyclerAdapter();
+        recyclerView = findViewById(R.id.recyclerViewPhoto);
+        recyclerAdapter = new RecyclerAdapterPhotos();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
-    public void onBtnBackToGroupActivity_Clicked(View caller){
-        Intent intent = new Intent(this, GroupActivity.class);
+    public void onBtnBackToFriendActivity_Clicked(View caller){
+        Intent intent = new Intent(this, FriendActivity.class);
         startActivity(intent);
     }
 }
