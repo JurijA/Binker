@@ -23,16 +23,12 @@ import com.facebook.login.LoginResult;
 
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
 
 public class LoginActivity extends AppCompatActivity {
-    private static List<User> listUsers = new ArrayList<>();
     CallbackManager callbackManager;
     private TextView txtLoginUser, txtLoginPassword;
 
@@ -47,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
         dataBaseHandler.getUsers();
         dataBaseHandler.getAmountUsers();
+
         callbackManager = CallbackManager.Factory.create();
         accessToken = AccessToken.getCurrentAccessToken();
         txtLoginUser = findViewById(R.id.txtLoginUser);
@@ -74,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this, "Successfully logged in with Facebook", Toast.LENGTH_SHORT).show();
                                             User user = new User(Integer.parseInt(o.getString("id")), o.getString("name"));
                                             dataBaseHandler.addUser(user);
-                                            Intent intent = new Intent(LoginActivity.this, ContactActivity.class);
+                                            Intent intent = new Intent(LoginActivity.this, FriendActivity.class);
                                             intent.putExtra("User", user);
                                             startActivity(intent);
                                         }
@@ -101,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onBtnLogin_Clicked(View caller) {
-        listUsers = DataBaseHandler.userList;
 
         String inputUsername = txtLoginUser.getText() + "";
         String inputHashedPassword = sha256(txtLoginPassword.getText() + "");
@@ -110,9 +106,9 @@ public class LoginActivity extends AppCompatActivity {
 
         if (DataBaseHandler.userExists(user)) {
 
-            user = getUserFromLogin(user);
+            user = DataBaseHandler.getUserFromLogin(user);
 
-            Intent intent = new Intent(this, ContactActivity.class);
+            Intent intent = new Intent(this, FriendActivity.class);
             intent.putExtra("User", user);
             startActivity(intent);
 
@@ -122,12 +118,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public User getUserFromLogin(User user) {
-        return listUsers.stream()
-                .filter(user::equalsLogin)
-                .collect(Collectors.toList())
-                .get(0);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onStringGoRegister_Clicked(View caller) {

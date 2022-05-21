@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.zxing.WriterException;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -27,6 +28,8 @@ import java.util.List;
 import be.kuleuven.dependencies.QRGContents;
 import be.kuleuven.dependencies.QRGEncoder;
 import be.kuleuven.objects.Capture;
+import be.kuleuven.objects.DataBaseHandler;
+import be.kuleuven.objects.Friendship;
 import be.kuleuven.objects.User;
 
 
@@ -34,19 +37,22 @@ public class AddFriendsActivity extends AppCompatActivity {
 
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
-    private User user;
-    private ImageView qrCodeUser;
-    private ImageView btnAddFriend;
-    List<User> friends = new ArrayList<>();
+    List<User> userList = new ArrayList<>();
+    List<Friendship> friendships = new ArrayList<>();
+    DataBaseHandler dataBaseHandler = new DataBaseHandler(AddFriendsActivity.this);
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friends);
+        userList = DataBaseHandler.userList;
+        dataBaseHandler.getFriendShips();
 
-        qrCodeUser = findViewById(R.id.idIVQrcode);
-        btnAddFriend = findViewById(R.id.imageAddFriend);
-        user = getIntent().getParcelableExtra("User");
-        System.out.println("user add friend: " + user);
+        ImageView qrCodeUser = findViewById(R.id.idIVQrcode);
+
+        this.user = getIntent().getParcelableExtra("User");
+
         WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         Display display = manager.getDefaultDisplay();
@@ -66,14 +72,15 @@ public class AddFriendsActivity extends AppCompatActivity {
     }
 
     public void onAddFriend_Clicked(View caller) {
+        friendships = DataBaseHandler.friendShips;
         IntentIntegrator intentIntegrator = new IntentIntegrator(
                 AddFriendsActivity.this
         );
-        intentIntegrator.setPrompt("For flash use volume up button");
-        intentIntegrator.setBeepEnabled(true);
-        intentIntegrator.setOrientationLocked(true);
-        intentIntegrator.setCaptureActivity(Capture.class);
-        intentIntegrator.initiateScan();
+        intentIntegrator.setPrompt("For flash use volume up button")
+                .setBeepEnabled(true)
+                .setOrientationLocked(true)
+                .setCaptureActivity(Capture.class)
+                .initiateScan();
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -83,21 +90,40 @@ public class AddFriendsActivity extends AppCompatActivity {
         IntentResult intentResult = IntentIntegrator.parseActivityResult(
                 requestCode, resultCode, data
         );
-        if (intentResult.getContents() != null) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(AddFriendsActivity.this)
-                    .setTitle("Add friend?")
-                    .setIcon(R.mipmap.ic_binker_launcher_round)
-                    .setMessage(intentResult.getContents())
-                    .setPositiveButton("OK",
-                            (dialogInterface, i) -> {
+        String email = intentResult.getContents(); // contents = email
 
-                            }
-                    );
-            builder.show();
+        if (DataBaseHandler.isValidEmailAddress(email)) { // security
+            if (DataBaseHandler.emailExists(email)) {       // email in db?
+                User friend = DataBaseHandler.getUserFromEmail(email);
+                Friendship friendship = new Friendship(user, friend);
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddFriendsActivity.this)
+                        .setTitle("Add friend")
+                        .setIcon(R.mipmap.ic_binker_launcher_round)
+                        .setMessage("Do you want to add " + friend.getName() + " ?")
+                        .setPositiveButton("Yes",
+                                ((dialogInterface, i) -> {
+                                    if (DataBaseHandler.friendShipExists(friendship)) {
+                                        Toast.makeText(this, "You're already friends with " + friendship.getB().getName(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        dataBaseHandler.addFriendShip(friendship);
+                                        Toast.makeText(this, "Successfully added " + friendship.getB().getName(), Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }))
+                        .setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
+                AlertDialog alert = builder.create();
+                alert.setOnShowListener(arg0 -> {
+                    alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.red));
+                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.black));
+                });
+                alert.show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Couldn't find user", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(getApplicationContext(), "Didn't find user", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Not proper User", Toast.LENGTH_SHORT).show();
         }
-    }
 
+    }
 }

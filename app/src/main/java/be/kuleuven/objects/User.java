@@ -110,6 +110,20 @@ public class User implements Parcelable {
         info.put("name", name);
     }
 
+    public boolean hasEmail(String email) {
+        return getEmail().equals(email);
+    }
+
+    public boolean hasId(Integer id) {
+        return getId().equals(id);
+    }
+
+    public User getUserFromEmail(String email) {
+        if (hasEmail(email)) return this;
+        return null;
+
+    }
+
     public void setPassword(String password) {
         info.put("password", password);
     }

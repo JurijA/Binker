@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.objects.DataBaseHandler;
@@ -23,7 +22,6 @@ import be.kuleuven.objects.User;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class RegisterActivity extends AppCompatActivity {
     DataBaseHandler dataBaseHandler = new DataBaseHandler(RegisterActivity.this);
-    private List<User> listUsers = new ArrayList<>();
     private TextView txtUsername, txtPassword, txtConfirmPassword, txtEmail;
 
     @Override
@@ -43,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onBtnRegister_Clicked(View caller) {
-        listUsers = DataBaseHandler.userList;
+        List<User> listUsers = DataBaseHandler.userList;
         Integer amountUsers = listUsers.size();
         String username = txtUsername.getText() + "";
         String password = sha256(txtPassword.getText() + "");
@@ -63,14 +61,14 @@ public class RegisterActivity extends AppCompatActivity {
         if (txtPassword.getText().length() >= 0) {
             if (!user.getName().equals("")) {
                 if (password.equals(confirmPassword)) {
-                    if (!isValidEmailAddress(txtEmail.getText() + "")) {
-                        if (mailIsUnique(txtEmail.getText() + "")) {
+                    if (!DataBaseHandler.isValidEmailAddress(txtEmail.getText() + "")) {
+                        if (DataBaseHandler.mailIsUnique(txtEmail.getText() + "")) {
 
                             dataBaseHandler.addUser(user);
 
                             Toast.makeText(this, "Welcome " + user.getName() + " ;)", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(this, ContactActivity.class);
+                            Intent intent = new Intent(this, FriendActivity.class);
                             intent.putExtra("User", user);
                             startActivity(intent);
 
@@ -89,36 +87,13 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, R.string.register_password_too_short, Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public Integer getFreeId(Integer id) {
-        if (idIsUnique(id)) {
+        if (DataBaseHandler.idIsUnique(id)) {
             return id;
         } else {
             return getFreeId(2 * id);
         }
-
-    }
-
-    public boolean idIsUnique(Integer id) {
-        return listUsers
-                .stream()
-                .noneMatch(user -> user.getId().equals(id));
-    }
-
-
-    public boolean isValidEmailAddress(String email) {
-        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
-        java.util.regex.Matcher m = p.matcher(email);
-        return m.matches();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public boolean mailIsUnique(String email) {
-        return listUsers
-                .stream()
-                .noneMatch(user -> user.getEmail().equals(email));
     }
 }

@@ -1,9 +1,11 @@
 package be.kuleuven.objects;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -19,7 +21,8 @@ import java.util.stream.Collectors;
 
 public class DataBaseHandler {
     private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
-    public static List<User> userList;
+    public static List<User> userList = new ArrayList<>();
+    public static List<Friendship> friendShips = new ArrayList<>();
     public static Integer USER_AMOUNT;
     public Context context;
 
@@ -28,11 +31,9 @@ public class DataBaseHandler {
     }
 
     public static Boolean userExists(@NonNull User user) {
-        List<User> names = userList
+        return userList
                 .stream()
-                .filter(user::equalsLogin)
-                .collect(Collectors.toList());
-        return !names.isEmpty();
+                .anyMatch(user::equalsLogin);
     }
 
     public static String sha256(final String base) {
@@ -52,8 +53,87 @@ public class DataBaseHandler {
         }
     }
 
-    public List<User> getUsers() {
-        List<User> userList = new ArrayList<>();
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static boolean mailIsUnique(String email) {
+        return userList
+                .stream()
+                .noneMatch(user -> user.getEmail().equals(email));
+    }
+
+    public static boolean idIsUnique(Integer id) {
+        return userList
+                .stream()
+                .noneMatch(user -> user.getId().equals(id));
+    }
+
+    public static boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
+    public static User getUserFromEmail(String email) {
+        return userList.stream()
+                .filter(user -> user.hasEmail(email))
+                .collect(Collectors.toList())
+                .get(0);
+    }
+
+    public static boolean emailExists(String email) {
+        return userList
+                .stream()
+                .anyMatch(user -> user.getEmail().equals(email));
+    }
+
+    public static boolean friendShipExists(Friendship friendship) {
+        return friendShips
+                .stream()
+                .anyMatch(friendship::equals);
+    }
+
+    public static User getUserFromLogin(User user) {
+        return userList.stream()
+                .filter(user::equalsLogin)
+                .collect(Collectors.toList())
+                .get(0);
+    }
+
+    public void getFriendShips() {
+
+        String requestURL = SUBMIT_URL + "selectFriends";
+        Volley.newRequestQueue(this.context).add(
+                new JsonArrayRequest(
+                        Request.Method.POST,
+                        requestURL,
+                        null,
+                        response -> {
+                            try {
+                                for (int i = 0; i < response.length(); i++) {
+                                    User friendA = getUserFromId(response.getJSONObject(i).getInt("idUserA"));
+                                    User friendB = getUserFromId(response.getJSONObject(i).getInt("idUserB"));
+                                    if (friendA != null && friendB != null) {
+                                        friendShips.add(new Friendship(friendA, friendB));
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.d("JSONObject: ", e.getMessage(), e);
+                            }
+                        },
+                        System.out::println
+
+                ));
+
+    }
+
+    public User getUserFromId(Integer id) {
+        return userList.stream()
+                .filter(user -> user.hasId(id))
+                .collect(Collectors.toList())
+                .get(0);
+    }
+
+    public void getUsers() {
         String requestURL = SUBMIT_URL + "selectUsers";
         Volley.newRequestQueue(this.context).add(
                 new JsonArrayRequest(
@@ -74,9 +154,11 @@ public class DataBaseHandler {
                                             response.getJSONObject(i).get("userLocation") + "",
                                             response.getJSONObject(i).get("userEmail") + ""
                                     );
+                                    System.out.println("User: " + i + " : " + user);
                                     userList.add(user);
-                                    DataBaseHandler.userList = userList;
+
                                 }
+                                System.out.println("DB list in class= " + userList);
                             } catch (Exception e) {
                                 Log.d("JSONObject: ", e.getMessage(), e);
                             }
@@ -84,7 +166,18 @@ public class DataBaseHandler {
                         System.out::println
 
                 ));
-        return userList;
+    }
+
+    public void addFriendShip(Friendship friendship) {
+        Volley.newRequestQueue(this.context).add(
+                new JsonArrayRequest(
+                        Request.Method.GET,
+                        SUBMIT_URL + "addFriendship/"
+                                + friendship.getA().getId() + "" + "/"
+                                + friendship.getB().getId() + ""
+                        ,
+                        null, null, null
+                ));
     }
 
     public void addUser(User user) {
@@ -106,7 +199,7 @@ public class DataBaseHandler {
                 ));
     }
 
-    public Integer getAmountUsers() {
+    public void getAmountUsers() {
 
         String url = SUBMIT_URL + "getUsersSize";
         Volley.newRequestQueue(this.context).add(
@@ -123,6 +216,5 @@ public class DataBaseHandler {
                         }, error -> Log.d("JSONError: ", error.getMessage(), error)
                 )
         );
-        return USER_AMOUNT;
     }
 }
