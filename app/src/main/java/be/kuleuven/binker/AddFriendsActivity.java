@@ -1,4 +1,3 @@
-
 package be.kuleuven.binker;
 
 import android.annotation.SuppressLint;
@@ -124,6 +123,5 @@ public class AddFriendsActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "Not proper User", Toast.LENGTH_SHORT).show();
         }
-
     }
 }

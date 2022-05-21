@@ -32,6 +32,10 @@
     <string name="register_email_already_used">"This email is already used"</string>
     <string name="add_friend_title">"Add Friend"</string>
     <string name="add_friend_qr">"Your QR code"</string>
+    <string name="todo">TODO</string>
+    <string name="user_log_in_ic">user log in ic</string>
+    <string name="password_log_in_ic">password log in ic</string>
+    <string name="email_ic">email ic</string>
 
 
 </resources>
