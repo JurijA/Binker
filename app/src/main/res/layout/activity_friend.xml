@@ -7,35 +7,36 @@
     tools:context=".FriendActivity">
 
     <ImageButton
-        android:id="@+id/button_profile"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_profile" />
-
-    <ImageButton
         android:id="@+id/button_add"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
         android:onClick="onBtnAddFriends_Clicked"
-        app:layout_constraintEnd_toStartOf="@+id/button_profile"
-        app:layout_constraintStart_toEndOf="@+id/button_settings"
+        app:layout_constraintEnd_toStartOf="@+id/BtnToPhotos"
+        app:layout_constraintStart_toEndOf="@+id/BtnOwnProfile"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_add" />
 
     <ImageButton
-        android:id="@+id/button_settings"
+        android:id="@+id/BtnOwnProfile"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_settings" />
+        app:srcCompat="@drawable/ic_profile" />
+
+    <ImageButton
+        android:id="@+id/BtnToPhotos"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:onClick="OnBtnPhotos_Clicked"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_photo" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -76,5 +77,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_add" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

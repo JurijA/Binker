@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/TxtFriendName" />
 
     <View
         android:id="@+id/view"
@@ -58,9 +58,9 @@
     </RelativeLayout>
 
     <ImageButton
-        android:id="@+id/Btn_GroupInfo"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/Btn_FriendProfile"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:onClick="onBtnInfo_Clicked"
@@ -69,26 +69,26 @@
         app:srcCompat="@drawable/ic_chatinfo" />
 
     <ImageButton
-        android:id="@+id/Btn_BackToGroupActivity"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/Btn_BackToContacts"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:onClick="onBtnBackToGroups_Clicked"
+        android:onClick="onBtnBackToContacts_Clicked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back_right" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/TxtFriendName"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_marginTop="16dp"
-        android:text="Group.name"
+        android:text="Friend.name"
         android:textAlignment="center"
         android:textSize="28sp"
-        app:layout_constraintEnd_toStartOf="@+id/Btn_BackToGroupActivity"
-        app:layout_constraintStart_toEndOf="@+id/Btn_GroupInfo"
+        app:layout_constraintEnd_toStartOf="@+id/Btn_BackToContacts"
+        app:layout_constraintStart_toEndOf="@+id/Btn_FriendProfile"
         app:layout_constraintTop_toTopOf="parent" />
 
 

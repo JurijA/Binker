@@ -14,13 +14,13 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
     }
 
-    public void onBtnBackToGroups_Clicked(View caller){
-        Intent intent = new Intent(this, GroupActivity.class);
+    public void onBtnBackToContacts_Clicked(View caller){
+        Intent intent = new Intent(this, FriendActivity.class);
         startActivity(intent);
     }
 
     public void onBtnInfo_Clicked(View caller){
-        Intent intent = new Intent(this, GroupInfoActivity.class);
+        Intent intent = new Intent(this, FriendInfoActivity.class);
         startActivity(intent);
     }
 }

@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.RequestQueue;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -34,11 +33,9 @@ import be.kuleuven.objects.User;
 
 public class LoginActivity extends AppCompatActivity {
     private static List<User> listUsers = new ArrayList<>();
-    private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
-    private static Integer USER_AMOUNT;
     CallbackManager callbackManager;
     private TextView txtLoginUser, txtLoginPassword;
-    private RequestQueue requestQueue;
+
     private AccessToken accessToken;
     DataBaseHandler dataBaseHandler = new DataBaseHandler(LoginActivity.this);
 
@@ -96,7 +93,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onRegisterWithFacebook_Clicked(View caller) {
         LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Collections.singletonList("public_profile"));
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -106,7 +102,6 @@ public class LoginActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onBtnLogin_Clicked(View caller) {
         listUsers = DataBaseHandler.userList;
-        USER_AMOUNT = DataBaseHandler.USER_AMOUNT;
 
         String inputUsername = txtLoginUser.getText() + "";
         String inputHashedPassword = sha256(txtLoginPassword.getText() + "");
