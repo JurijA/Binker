@@ -189,8 +189,8 @@ public class LoginActivity extends AppCompatActivity {
                         null,
                         response -> {
                             try {
-                                USER_AMOUNT = Integer.parseInt(response.getJSONObject(0).get("SIZE") + "");
-                            } catch (JSONException e) {
+                                USER_AMOUNT = Integer.parseInt(response.getJSONObject(0).get("SIZE") + ""); }
+                            catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }, error -> Log.d("JSONError: ", error.getMessage(), error)

@@ -32,6 +32,19 @@
     <string name="register_email_already_used">"This email is already used"</string>
     <string name="add_friend_title">"Add Friend"</string>
     <string name="add_friend_qr">"Your QR code"</string>
+    <string-array name="Drinks">
+        <item>Select drink</item>
+        <item>Cara Pils</item>
+        <item>Stella Artois</item>
+        <item>Jupiler</item>
+        <item>Westmalle</item>
+        <item>Duvel</item>
+        <item>Chateau Migraine</item>
+        <item>Tripel Karmeliet</item>
+        <item>Kasteel Rouge</item>
+        <item>Vodka Redbull</item>
+        <item>Appel Jenever</item>
+    </string-array>
 
 
 </resources>
