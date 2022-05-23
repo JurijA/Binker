@@ -6,8 +6,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +14,7 @@ import java.util.Objects;
 public class User implements Parcelable {
 
     // constructor syntax -- important
-
+    public static boolean exists = false;
     String[] keys = {"name", "password", "profilePicture", "birthday", "gender", "link", "location", "email"};
     Integer id;
     Map<String, String> info = new HashMap<>();
@@ -57,22 +55,6 @@ public class User implements Parcelable {
         }
     };
 
-    public static String sha256(final String base) {
-        try {
-            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            final byte[] hash = digest.digest(base.getBytes(StandardCharsets.UTF_8));
-            final StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                final String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1)
-                    hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
@@ -87,13 +69,16 @@ public class User implements Parcelable {
         out.writeString(getEmail());
     }
 
+    public void setExists(boolean exists) {
+        User.exists = exists;
+    }
 
     public boolean equalsLogin(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(info.get("name"), user.getName())
-                && Objects.equals(info.get("password"), user.getPassword());
+        return Objects.equals(this.getEmail(), user.getEmail())
+                && Objects.equals(this.getPassword(), user.getPassword());
     }
 
 
@@ -128,8 +113,22 @@ public class User implements Parcelable {
         info.put("name", name);
     }
 
+    public boolean hasEmail(String email) {
+        return getEmail().equals(email);
+    }
+
+    public boolean hasId(Integer id) {
+        return getId().equals(id);
+    }
+
+    public User getUserFromEmail(String email) {
+        if (hasEmail(email)) return this;
+        return null;
+
+    }
+
     public void setPassword(String password) {
-        info.put("password", sha256(password));
+        info.put("password", password);
     }
 
     public void setBirthday(String birthday) {

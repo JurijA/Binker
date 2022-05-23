@@ -27,21 +27,6 @@
         android:layout_marginBottom="215dp"
         android:contentDescription="@string/qr_code" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="134dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="170dp"
-        android:layout_marginEnd="222dp"
-        android:layout_marginBottom="542dp"
-        android:text="@string/add_friend_qr"
-        android:textAlignment="textStart" />
-
     <ImageButton
         android:id="@+id/imageAddFriend"
         android:layout_width="140dp"
@@ -54,9 +39,10 @@
         android:layout_marginBottom="37dp"
         android:adjustViewBounds="true"
         android:background="@color/white"
+        android:contentDescription="@string/todo"
         android:onClick="onAddFriend_Clicked"
         android:scaleType="fitCenter"
-        android:src="@mipmap/ic_add_friends_big" />
+        android:src="@mipmap/ic_add_friends" />
 
     <TextView
         android:id="@+id/textView7"
@@ -72,5 +58,30 @@
         android:text="@string/add_friend_title"
         android:textSize="34sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageAddFriend"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="180dp"
+        android:layout_marginBottom="265dp"
+        android:text="@string/add_friend_qr"
+        android:textColor="#38C9FF" />
+
+    <ImageButton
+        android:id="@+id/btnShowFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="25dp"
+        android:background="@color/white"
+        android:contentDescription="@string/show_friends_button"
+        android:onClick="onShowFriends_Clicked"
+        android:src="@mipmap/ic_add_friends_big" />
+
 
 </RelativeLayout>

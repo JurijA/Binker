@@ -9,14 +9,8 @@
         android:endColor="#1443FF"
         android:startColor="#FCA6FF"
         android:type="linear" />
-    <padding
-        android:bottom="0dp"
-        android:left="0dp"
-        android:right="0dp"
-        android:top="0dp" />
-    <size
-        android:width="168dp"
-        android:height="60dp" />
+   
+
     <stroke
         android:width="3dp"
         android:color="#FFFFFF" />
