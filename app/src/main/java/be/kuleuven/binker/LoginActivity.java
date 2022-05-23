@@ -25,13 +25,14 @@ import org.json.JSONException;
 
 import java.util.Collections;
 
+import be.kuleuven.interfaces.VolleyCallBack;
 import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
 
 public class LoginActivity extends AppCompatActivity {
-    CallbackManager callbackManager;
-    private TextView txtLoginUser, txtLoginPassword;
 
+    CallbackManager callbackManager;
+    private TextView txtLoginEmail, txtLoginPassword;
     private AccessToken accessToken;
     DataBaseHandler dataBaseHandler = new DataBaseHandler(LoginActivity.this);
 
@@ -41,12 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        dataBaseHandler.getUsers();
-        dataBaseHandler.getAmountUsers();
-
         callbackManager = CallbackManager.Factory.create();
         accessToken = AccessToken.getCurrentAccessToken();
-        txtLoginUser = findViewById(R.id.txtLoginUser);
+        txtLoginEmail = findViewById(R.id.txtLoginEmail);
         txtLoginPassword = findViewById(R.id.txtLoginPassword);
 
         LoginManager.getInstance().registerCallback(callbackManager,
@@ -99,23 +97,30 @@ public class LoginActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onBtnLogin_Clicked(View caller) {
 
-        String inputUsername = txtLoginUser.getText() + "";
+        String inputEmail = txtLoginEmail.getText() + "";
         String inputHashedPassword = sha256(txtLoginPassword.getText() + "");
 
-        User user = new User(inputUsername, inputHashedPassword);
+        User user = new User();
+        user.setEmail(inputEmail);
+        user.setPassword(inputHashedPassword);
+        dataBaseHandler.getUserFromLogin(
+                user,
+                new VolleyCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        User user = DataBaseHandler.user;
+                        Intent intent = new Intent(LoginActivity.this, FriendActivity.class);
+                        intent.putExtra("User", user);
+                        startActivity(intent);
+                        Toast.makeText(LoginActivity.this, R.string.login_success, Toast.LENGTH_SHORT).show();
+                    }
 
-        if (DataBaseHandler.userExists(user)) {
-
-            user = DataBaseHandler.getUserFromLogin(user);
-
-            Intent intent = new Intent(this, FriendActivity.class);
-            intent.putExtra("User", user);
-            startActivity(intent);
-
-            Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, R.string.login_fail, Toast.LENGTH_SHORT).show();
-        }
+                    @Override
+                    public void onFail() {
+                        Toast.makeText(LoginActivity.this, R.string.login_fail, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
     }
 
 

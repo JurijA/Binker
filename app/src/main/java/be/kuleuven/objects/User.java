@@ -14,7 +14,7 @@ import java.util.Objects;
 public class User implements Parcelable {
 
     // constructor syntax -- important
-
+    public static boolean exists = false;
     String[] keys = {"name", "password", "profilePicture", "birthday", "gender", "link", "location", "email"};
     Integer id;
     Map<String, String> info = new HashMap<>();
@@ -69,13 +69,16 @@ public class User implements Parcelable {
         out.writeString(getEmail());
     }
 
+    public void setExists(boolean exists) {
+        User.exists = exists;
+    }
 
     public boolean equalsLogin(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(info.get("name"), user.getName())
-                && Objects.equals(info.get("password"), user.getPassword());
+        return Objects.equals(this.getEmail(), user.getEmail())
+                && Objects.equals(this.getPassword(), user.getPassword());
     }
 
 

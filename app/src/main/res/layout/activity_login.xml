@@ -12,12 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:minHeight="48dp"
         android:onClick="onRegisterWithFacebook_Clicked"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.552"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -49,15 +51,16 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:autofillHints=""
-        android:id="@+id/txtLoginUser"
+        android:id="@+id/txtLoginEmail"
         android:layout_width="250dp"
-        android:layout_height="42dp"
+        android:layout_height="48dp"
+        android:autofillHints=""
         android:background="@drawable/login_register_text_view"
+        android:hint="@string/login_hint_email"
+        android:inputType="textShortMessage|textPersonName|text|textEmailAddress"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:hint="@string/login_hint_username"
-        android:inputType="textPersonName"
+        android:textColorHint="#757575"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,31 +80,32 @@
         app:srcCompat="@mipmap/ic_login_user" />
 
     <ImageView
-        android:contentDescription="@string/todo"
         android:id="@+id/imageLoginPassword"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginStart="16dp"
+        android:contentDescription="@string/todo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.599"
+        app:layout_constraintVertical_bias="0.606"
         app:srcCompat="@mipmap/ic_login_password" />
 
     <EditText
-        android:autofillHints=""
         android:id="@+id/txtLoginPassword"
         android:layout_width="250dp"
-        android:layout_height="42dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
+        android:autofillHints=""
         android:background="@drawable/login_register_text_view"
         android:ems="10"
         android:hint="@string/login_hint_password"
         android:inputType="textPassword"
-        android:paddingTop="10dp"
         android:paddingStart="20dp"
+        android:paddingTop="10dp"
         android:paddingEnd="20dp"
         android:paddingBottom="10dp"
+        android:textColorHint="#757575"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -154,10 +158,11 @@
         android:layout_height="wrap_content"
         android:onClick="onStringGoRegister_Clicked"
         android:text="@string/login_text_register"
-        android:textColor="@android:color/holo_blue_light"
+        android:textColor="#00838F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/TxtViewBeverage"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/txtNotify"

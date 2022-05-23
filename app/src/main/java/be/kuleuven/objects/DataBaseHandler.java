@@ -19,11 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import be.kuleuven.interfaces.VolleyCallBack;
+
 public class DataBaseHandler {
     private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
     public static List<User> userList = new ArrayList<>();
     public static List<Friendship> friendShips = new ArrayList<>();
     public static Integer USER_AMOUNT;
+    public static User user = new User();
     public Context context;
 
     public DataBaseHandler(Context context) {
@@ -86,10 +89,17 @@ public class DataBaseHandler {
                 .anyMatch(user -> user.getEmail().equals(email));
     }
 
-    public static boolean friendShipExists(Friendship friendship) {
-        return friendShips
+    public static List<User> getFriendsFrom(User user) {
+        List<User> friends = new ArrayList<>();
+        List<Friendship> friendshipList = friendShips
                 .stream()
-                .anyMatch(friendship::equals);
+                .filter(friendship -> friendship.getA().equals(user) || friendship.getB().equals(user))
+                .collect(Collectors.toList());
+        for (Friendship friendship : friendshipList) {
+            if (friendship.getA().equals(user)) friends.add(user);
+            if (friendship.getB().equals(user)) friends.add(user);
+        }
+        return friends;
     }
 
     public static User getUserFromLogin(User user) {
@@ -99,32 +109,65 @@ public class DataBaseHandler {
                 .get(0);
     }
 
-    public void getFriendShips() {
+    public void friendShipExists(Friendship friendship, VolleyCallBack volleyCallBack) {
+        String requestURL = SUBMIT_URL + "getFriendship" + "/" + friendship.getA() + "";
 
-        String requestURL = SUBMIT_URL + "selectFriends";
         Volley.newRequestQueue(this.context).add(
                 new JsonArrayRequest(
-                        Request.Method.POST,
+                        Request.Method.GET,
                         requestURL,
                         null,
                         response -> {
-                            try {
-                                for (int i = 0; i < response.length(); i++) {
-                                    User friendA = getUserFromId(response.getJSONObject(i).getInt("idUserA"));
-                                    User friendB = getUserFromId(response.getJSONObject(i).getInt("idUserB"));
-                                    if (friendA != null && friendB != null) {
-                                        friendShips.add(new Friendship(friendA, friendB));
-                                    }
-                                }
-                            } catch (Exception e) {
-                                Log.d("JSONObject: ", e.getMessage(), e);
+                            if (response.length() > 0) {
+                                volleyCallBack.onSuccess();
+                            } else {
+                                volleyCallBack.onFail();
                             }
                         },
-                        System.out::println
-
+                        error -> Log.d("DB: ", error.getMessage(), error)
                 ));
-
     }
+
+    public void getUserFromLogin(User user, final VolleyCallBack callBack) {
+        System.out.println("pre :" + user);
+        String requestURL = SUBMIT_URL + "getUserFromLogin" + "/" +
+                user.getEmail() + "" + "/" +
+                user.getPassword() + "";
+        Volley.newRequestQueue(this.context).add(
+                new JsonArrayRequest(
+                        Request.Method.GET,
+                        requestURL,
+                        null,
+                        response -> {
+                            System.out.println("rep" + response);
+                            if (response.length() > 0) {
+                                for (int i = 0; i < response.length(); i++) {
+                                    try {
+                                        DataBaseHandler.user = new User(
+                                                response.getJSONObject(i).getInt("idUser"),
+                                                response.getJSONObject(i).get("userName") + "",
+                                                response.getJSONObject(i).get("userPassword") + "",
+                                                response.getJSONObject(i).get("userProfilePicture") + "",
+                                                response.getJSONObject(i).get("userBirthday") + "",
+                                                response.getJSONObject(i).get("userGender") + "",
+                                                response.getJSONObject(i).get("userLink") + "",
+                                                response.getJSONObject(i).get("userLocation") + "",
+                                                response.getJSONObject(i).get("userEmail") + ""
+                                        );
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                System.out.println("post fuck" + DataBaseHandler.user);
+                                callBack.onSuccess();
+                            } else {
+                                callBack.onFail();
+                            }
+                        },
+                        error -> Log.d("DB: ", error.getMessage(), error)
+                ));
+    }
+
 
     public User getUserFromId(Integer id) {
         return userList.stream()
@@ -154,17 +197,13 @@ public class DataBaseHandler {
                                             response.getJSONObject(i).get("userLocation") + "",
                                             response.getJSONObject(i).get("userEmail") + ""
                                     );
-                                    System.out.println("User: " + i + " : " + user);
                                     userList.add(user);
-
                                 }
-                                System.out.println("DB list in class= " + userList);
                             } catch (Exception e) {
                                 Log.d("JSONObject: ", e.getMessage(), e);
                             }
                         },
-                        System.out::println
-
+                        e -> Log.d("DB: ", e.getMessage(), e)
                 ));
     }
 
@@ -176,7 +215,7 @@ public class DataBaseHandler {
                                 + friendship.getA().getId() + "" + "/"
                                 + friendship.getB().getId() + ""
                         ,
-                        null, null, null
+                        null, null, System.out::println
                 ));
     }
 
@@ -195,7 +234,8 @@ public class DataBaseHandler {
                                 + user.getLink() + "" + "/"
                                 + user.getEmail() + ""
                         ,
-                        null, null, null
+                        null, null,
+                        error -> Log.d("JSONError: ", error.getMessage(), error)
                 ));
     }
 

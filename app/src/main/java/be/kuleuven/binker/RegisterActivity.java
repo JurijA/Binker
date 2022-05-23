@@ -65,9 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (DataBaseHandler.mailIsUnique(txtEmail.getText() + "")) {
 
                             dataBaseHandler.addUser(user);
-
                             Toast.makeText(this, "Welcome " + user.getName() + " ;)", Toast.LENGTH_SHORT).show();
-
                             Intent intent = new Intent(this, FriendActivity.class);
                             intent.putExtra("User", user);
                             startActivity(intent);

@@ -6,6 +6,7 @@
     <string name="login_text_register"> <u>Register here</u></string>
     <string name="login_notify_not_found">"Fuck you"</string>
     <string name="login_notify_found">"Welcome homo"</string>
+    <string name="login_hint_email">"Email"</string>
     <string name="login_hint_username">"Username"</string>
     <string name="login_hint_password">"Password"</string>
     <string name="login_text_remember_me">"Remember Me"</string>
@@ -36,6 +37,12 @@
     <string name="user_log_in_ic">user log in ic</string>
     <string name="password_log_in_ic">password log in ic</string>
     <string name="email_ic">email ic</string>
-
+    <string name="friends_ic">friends ic</string>
+    <string name="friends_delete">Your friends</string>
+    <string name="favourite_beer">Favourite Beer</string>
+    <string name="image_of_user">Image of user</string>
+    <string name="name">Name</string>
+    <string name="delete_icon">delete icon</string>
+    <string name="show_friends_button">show friends button</string>
 
 </resources>

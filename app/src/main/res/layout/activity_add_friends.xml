@@ -28,7 +28,6 @@
         android:contentDescription="@string/qr_code" />
 
     <ImageButton
-        android:contentDescription="@string/todo"
         android:id="@+id/imageAddFriend"
         android:layout_width="140dp"
         android:layout_height="140dp"
@@ -40,9 +39,10 @@
         android:layout_marginBottom="37dp"
         android:adjustViewBounds="true"
         android:background="@color/white"
+        android:contentDescription="@string/todo"
         android:onClick="onAddFriend_Clicked"
         android:scaleType="fitCenter"
-        android:src="@mipmap/ic_add_friends_big" />
+        android:src="@mipmap/ic_add_friends" />
 
     <TextView
         android:id="@+id/textView7"
@@ -69,5 +69,19 @@
         android:layout_marginBottom="265dp"
         android:text="@string/add_friend_qr"
         android:textColor="#38C9FF" />
+
+    <ImageButton
+        android:id="@+id/btnShowFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="25dp"
+        android:background="@color/white"
+        android:contentDescription="@string/show_friends_button"
+        android:onClick="onShowFriends_Clicked"
+        android:src="@mipmap/ic_add_friends_big" />
+
 
 </RelativeLayout>
