@@ -19,15 +19,12 @@ public class PhotoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo);
         recyclerView = findViewById(R.id.recyclerViewPhoto);
         recyclerAdapter = new RecyclerAdapterPhotos();
-        recyclerView.setAdapter(recyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
     public void onBtnBackToFriendActivity_Clicked(View caller){
         Intent intent = new Intent(this, FriendActivity.class);
         startActivity(intent);
     }
-
-
 }

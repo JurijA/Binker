@@ -19,6 +19,7 @@
     <string name="login_success">"Welcome back :)"</string>
     <string name="login_fail">"Wrong credentials"</string>
     <string name="register_success">"Welcome Binker ;)"</string>
+    <string name="login_hint_email">"Email"</string>
     <string name="register_title">"Register"</string>
     <string name="register_hint_email">"Email</string>
     <string name="register_hint_confirm_password">"Confirm Password"</string>
@@ -46,5 +47,17 @@
         <item>Appel Jenever</item>
     </string-array>
 
+    <string name="friends_ic">friends ic</string>
+    <string name="friends_delete">Your friends</string>
+    <string name="favourite_beer">Favourite Beer</string>
+    <string name="image_of_user">Image of user</string>
+    <string name="name">Name</string>
+    <string name="delete_icon">delete icon</string>
+    <string name="show_friends_button">show friends button</string>
+
+    <string name="todo">TODO</string>
+    <string name="user_log_in_ic">user log in ic</string>
+    <string name="password_log_in_ic">password log in ic</string>
+    <string name="email_ic">email ic</string>
 
 </resources>

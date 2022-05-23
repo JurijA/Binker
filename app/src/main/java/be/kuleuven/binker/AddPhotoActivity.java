@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,9 +26,9 @@ import java.io.IOException;
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final int selecter = 1000;
-    Uri uri;
     ImageView PhotoToBeUploaded;
     Button ChooseBtn;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +58,37 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == selecter && resultCode == RESULT_OK && data!= null && data.getData() != null) {
-            uri = data.getData();
-            Bitmap bitmap = null;
+        if (requestCode == selecter && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-            } catch (IOException e) {
+                //getting image from gallery
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                //Rescale the bitmap to 400px wide (avoid storing large images!)
+                bitmap = getResizedBitmap( bitmap, 400 );
+
+                //Setting image to ImageView
+                PhotoToBeUploaded.setImageBitmap(bitmap);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            PhotoToBeUploaded.setImageBitmap(bitmap);
         }
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scale = ((float) newWidth) / width;
+
+        // We create a matrix to transform the image
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+
+        // Create the new bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 
 
@@ -85,3 +107,4 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
     }
 
 }
+
