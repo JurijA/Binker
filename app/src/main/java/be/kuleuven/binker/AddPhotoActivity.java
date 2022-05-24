@@ -61,7 +61,7 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
             try {
                 InputStream inputStream = getContentResolver().openInputStream(data.getData());
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                imageView.setImageBitmap(DataBaseHandler.resizeBitmap(bitmap, photo.getWidth(), photo.getHeight()));
+                imageView.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -85,12 +85,12 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void onBtnUpload_Clicked(View caller){
+    public void onBtnUpload_Clicked(View caller) {
         ImageView PhotoToBeUploaded = findViewById(R.id.ImageUploadPhoto);
         BitmapDrawable drawable = (BitmapDrawable) PhotoToBeUploaded.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
-        String encodedPhoto = DataBaseHandler.BitmapToBase64(bitmap);
-        new DataBaseHandler(this).uploadPhoto(user, spinner.getSelectedItem().toString(), encodedPhoto);
+        bitmap = DataBaseHandler.resizeBitmap(bitmap, 30, 30);
+        new DataBaseHandler(this).uploadPhoto(user, spinner.getSelectedItem().toString(), bitmap);
 
         Intent intent = new Intent(this, PhotoActivity.class);
         startActivity(intent);

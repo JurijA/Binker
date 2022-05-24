@@ -135,17 +135,18 @@ public class DataBaseHandler {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void uploadPhoto(User user, String beverage, String photo) {
+    public void uploadPhoto(User user, String beverage, Bitmap photo) {
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(now);
+        String photo1 = DataBaseHandler.BitmapToBase64(photo);
 
         String url = SUBMIT_URL + "uploadPhoto/" + user.getId() + "/"
-                + currentTime + "/" + 0 + "/" + beverage + "/" + photo + "";
+                + currentTime + "/" + 0 + "/" + beverage + "/" + photo1 + "";
 
         Volley.newRequestQueue(this.context).add(
                 new JsonArrayRequest(
-                        Request.Method.POST,
+                        Request.Method.GET,
                         url,
                         null,
                         null,
