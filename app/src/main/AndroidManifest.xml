@@ -34,6 +34,7 @@
         </activity>
         <activity android:name=".AddFriendsActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".DeleteFriendActivity" />
         <activity
             android:name="be.kuleuven.objects.Capture"
             android:screenOrientation="fullSensor"

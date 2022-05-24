@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         txtLoginEmail = findViewById(R.id.txtLoginEmail);
         txtLoginPassword = findViewById(R.id.txtLoginPassword);
 
+        dataBaseHandler.getUsers();
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override

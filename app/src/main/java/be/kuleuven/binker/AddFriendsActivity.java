@@ -36,11 +36,12 @@ public class AddFriendsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friends);
+        dataBaseHandler.getUsers();
+        dataBaseHandler.getFriends();
 
         ImageView qrCodeUser = findViewById(R.id.idIVQrcode);
 
         user = getIntent().getParcelableExtra("User");
-        System.out.println("user kfjzeilf" + user);
         QRGEncoder qrgEncoder = new QRGEncoder(user.getEmail(), null, QRGContents.Type.TEXT, 200);
 
 
@@ -74,30 +75,32 @@ public class AddFriendsActivity extends AppCompatActivity {
         System.out.println("-------------------");
         System.out.println(email);
         System.out.println("-------------------");
-        if (DataBaseHandler.isValidEmailAddress(email) || true) { // security
+        if ((DataBaseHandler.isValidEmailAddress(email)) && email != null) { // security
             if (DataBaseHandler.emailExists(email)) {       // email in db?
                 User friend = DataBaseHandler.getUserFromEmail(email);
-                Friendship friendship = new Friendship(user, friend);
+                Friendship friendshipA = new Friendship(user, friend);
+                Friendship friendshipB = new Friendship(friend, user);
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddFriendsActivity.this)
                         .setTitle("Add friend")
                         .setIcon(R.mipmap.ic_binker_launcher_round)
                         .setMessage("Do you want to add " + friend.getName() + " ?")
                         .setPositiveButton("Yes",
-                                ((dialogInterface, i) -> dataBaseHandler.friendShipExists(friendship,
+                                ((dialogInterface, i) -> dataBaseHandler.friendShipExists(friendshipA,
                                         new VolleyCallBack() {
                                             @Override
                                             public void onSuccess() {
                                                 Toast.makeText(AddFriendsActivity.this,
                                                         "You're already friends with " +
-                                                                friendship.getB().getName(),
+                                                                friendshipA.getB().getName(),
                                                         Toast.LENGTH_SHORT).show();
                                             }
 
                                             @Override
                                             public void onFail() {
-                                                dataBaseHandler.addFriendShip(friendship);
+                                                dataBaseHandler.addFriendShip(friendshipA);
+                                                dataBaseHandler.addFriendShip(friendshipB);
                                                 Toast.makeText(AddFriendsActivity.this,
-                                                        "Successfully added " + friendship.getB().getName(),
+                                                        "Successfully added " + friendshipA.getB().getName(),
                                                         Toast.LENGTH_SHORT).show();
 
                                             }

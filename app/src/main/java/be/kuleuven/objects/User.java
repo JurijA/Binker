@@ -121,11 +121,6 @@ public class User implements Parcelable {
         return getId().equals(id);
     }
 
-    public User getUserFromEmail(String email) {
-        if (hasEmail(email)) return this;
-        return null;
-
-    }
 
     public void setPassword(String password) {
         info.put("password", password);

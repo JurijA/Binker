@@ -1,34 +1,30 @@
 package be.kuleuven.binker;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import java.util.List;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
 
 public class FriendActivity extends AppCompatActivity {
 
     private User user;
-    private static List<User> listUsers;
     RecyclerView recyclerView;
     RecyclerAdapterFriends recyclerAdapter;
-
+    DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
         user = getIntent().getParcelableExtra("User");
-        listUsers = getIntent().getParcelableExtra("Users");
-        System.out.println("conact: " + listUsers);
-        System.out.println("user contact: " + user);
         recyclerView = findViewById(R.id.recyclerViewFriends);
         recyclerAdapter = new RecyclerAdapterFriends();
         recyclerView.setAdapter(recyclerAdapter);
