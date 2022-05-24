@@ -8,4 +8,5 @@ import com.facebook.appevents.ml.Utils;
 
 public class RecyclerAdapterChat {
 
+
 }
