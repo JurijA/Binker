@@ -6,8 +6,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.appevents.ml.Utils;
 
-public class RecyclerAdapterChat{
-
-
+public class RecyclerAdapterChat {
 
 }

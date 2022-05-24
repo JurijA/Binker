@@ -24,14 +24,6 @@ import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private static final int selecter = 1000;
-    ImageView PhotoToBeUploaded;
-    Button ChooseBtn;
-
-    private Bitmap bitmap;
-    private User user;
-    private static List<User> listUsers;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,56 +34,6 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-        user = getIntent().getParcelableExtra("User");
-        System.out.println(user);
-        ChooseBtn = findViewById(R.id.BtnChoosePicture);
-        PhotoToBeUploaded = findViewById(R.id.ImageUploadPhoto);
-        PhotoToBeUploaded.setImageBitmap(DataBaseHandler.Base64ToBitmapToSize(
-                user.getProfilePicture(), 400
-        ));
-        ChooseBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intent, selecter);
-
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == selecter && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri filePath = data.getData();
-
-            try {
-                //getting image from gallery
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                //Rescale the bitmap to 400px wide (avoid storing large images!)
-                bitmap = getResizedBitmap(bitmap, 400);
-
-                //Setting image to ImageView
-                PhotoToBeUploaded.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public Bitmap getResizedBitmap(Bitmap bm, int newWidth) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scale = ((float) newWidth) / width;
-
-        // We create a matrix to transform the image
-        Matrix matrix = new Matrix();
-        matrix.postScale(scale, scale);
-
-        // Create the new bitmap
-        Bitmap resizedBitmap = Bitmap.createBitmap(
-                bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
-        return resizedBitmap;
     }
 
 
@@ -101,27 +43,14 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         if (i != 0) {
             text = adapterView.getItemAtPosition(i).toString();
             Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
-        }
-
-    }
+        }}
 
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
+    public void onNothingSelected(AdapterView<?> adapterView) {}
 
-    }
-
-    public void btnFromProfileToContacts_Clicked(View caller) {
-        Intent intent = new Intent(this, FriendActivity.class);
-        intent.putExtra("User", user);
+    public void OnBtnBackToPhotos_Clicked(View caller){
+        Intent intent = new Intent(this, PhotoActivity.class);
         startActivity(intent);
-    }
-
-    public void onUploadPhoto_Clicked(View caller) {
-        user.setProfilePicture(DataBaseHandler.BitmapToBase64(bitmap));
-        System.out.println("user pre" + user);
-        DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
-        dataBaseHandler.updateUserProfilePicture(user);
-        Toast.makeText(this, "Profile picture is updated", Toast.LENGTH_SHORT).show();
     }
 }
 

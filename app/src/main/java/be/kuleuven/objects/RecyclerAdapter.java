@@ -16,7 +16,7 @@ import java.util.List;
 import be.kuleuven.binker.DeleteFriendActivity;
 import be.kuleuven.binker.R;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.FriendViewHolder> {
     public static List<User> friendList;
     public User user;
 
@@ -44,7 +44,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<FriendViewHolder> {
     public int getItemCount() {
         return friendList.size();
     }
-}
+
 
 class FriendViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     TextView txtName, txtFavBeer;
@@ -73,5 +73,6 @@ class FriendViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
         DeleteFriendActivity.adapter.notifyItemRemoved(pos);
         Toast.makeText(view.getContext(), "You removed " + friend.getName() + " from your friends", Toast.LENGTH_SHORT).show();
 
+    }
     }
 }
