@@ -19,13 +19,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+
+import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    public User user;
+
     private static final int selecter = 1000;
-    ImageView ImageUploadPhoto;
+    ImageView PhotoToBeUploaded;
     Button ChooseBtn;
-    Bitmap bitmap;
+
+    private Bitmap bitmap;
+    private User user;
+    private static List<User> listUsers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +49,8 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         user = getIntent().getParcelableExtra("User");
         System.out.println(user);
         ChooseBtn = findViewById(R.id.BtnChoosePicture);
-        ImageUploadPhoto = findViewById(R.id.ImageUploadPhoto);
-        ImageUploadPhoto.setImageBitmap(DataBaseHandler.Base64ToBitmapToSize(
+        PhotoToBeUploaded = findViewById(R.id.ImageUploadPhoto);
+        PhotoToBeUploaded.setImageBitmap(DataBaseHandler.Base64ToBitmapToSize(
                 user.getProfilePicture(), 400
         ));
         ChooseBtn.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +78,7 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
                 bitmap = getResizedBitmap(bitmap, 400);
 
                 //Setting image to ImageView
-                ImageUploadPhoto.setImageBitmap(bitmap);
+                PhotoToBeUploaded.setImageBitmap(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -95,28 +105,27 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text;
-        if(i != 0) {
+        if (i != 0) {
             text = adapterView.getItemAtPosition(i).toString();
             Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
         }
 
     }
 
-
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
+    public void OnBtnBackToPhotos_Clicked(View caller) {
+        Intent intent = new Intent(this, PhotoActivity.class);
+        intent.putExtra("User", user);
+        startActivity(intent);
+    }
+
     public void onUploadPhoto_Clicked(View caller) {
         user.setProfilePicture(DataBaseHandler.BitmapToBase64(bitmap));
         Toast.makeText(this, "Profile picture is updated", Toast.LENGTH_SHORT).show();
-    }
-
-    public void btnFromProfileToContacts_Clicked(View caller) {
-        Intent intent = new Intent(this, FriendActivity.class);
-        intent.putExtra("User", user);
-        startActivity(intent);
     }
 }
 

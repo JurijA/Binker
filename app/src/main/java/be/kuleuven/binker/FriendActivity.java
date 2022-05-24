@@ -9,8 +9,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
 
 public class FriendActivity extends AppCompatActivity {
@@ -18,12 +16,9 @@ public class FriendActivity extends AppCompatActivity {
     private User user;
     RecyclerView recyclerView;
     RecyclerAdapterFriends recyclerAdapter;
-    DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
-    private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
         user = getIntent().getParcelableExtra("User");
@@ -47,11 +42,13 @@ public class FriendActivity extends AppCompatActivity {
 
     public void onBtnFriendChat_Clicked(View caller){
         Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 
     public void OnBtnPhotos_Clicked (View caller){
         Intent intent = new Intent(this, PhotoActivity.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 

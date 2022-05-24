@@ -24,6 +24,9 @@
             android:name=".AddPhotoActivity"
             android:exported="false" />
         <activity
+            android:name=".PhotoActivity"
+            android:exported="false"/>
+        <activity
             android:name=".FriendActivity"
             android:exported="false" />
         <activity

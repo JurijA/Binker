@@ -8,10 +8,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.List;
+
+import be.kuleuven.objects.User;
+
 public class PhotoActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerAdapterPhotos recyclerAdapter;
+    private User user;
+    private static List<User> listUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,12 @@ public class PhotoActivity extends AppCompatActivity {
 
     public void onBtnBackToFriendActivity_Clicked(View caller){
         Intent intent = new Intent(this, FriendActivity.class);
+        startActivity(intent);
+    }
+
+    public void onBtnUploadPhoto_Clicked (View caller){
+        Intent intent = new Intent(this, AddPhotoActivity.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 }
