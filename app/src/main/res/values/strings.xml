@@ -59,5 +59,6 @@
     <string name="user_log_in_ic">user log in ic</string>
     <string name="password_log_in_ic">password log in ic</string>
     <string name="email_ic">email ic</string>
+    <string name="back"><![CDATA[<-]]></string>
 
 </resources>

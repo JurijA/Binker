@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -100,6 +101,13 @@ public class DataBaseHandler {
                 .filter(user -> user.hasEmail(email))
                 .collect(Collectors.toList())
                 .get(0);
+    }
+
+    public static String BitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     public void deleteFriendShip(Friendship friendship) {

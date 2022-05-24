@@ -125,4 +125,11 @@ public class AddFriendsActivity extends AppCompatActivity {
         intent.putExtra("User", user);
         startActivity(intent);
     }
+
+    public void btnFromAddFriendsToContacts_Clicked(View caller) {
+        Intent intent = new Intent(this, FriendActivity.class);
+        intent.putExtra("User", user);
+        startActivity(intent);
+    }
+
 }

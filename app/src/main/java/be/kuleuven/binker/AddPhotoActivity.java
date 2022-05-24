@@ -1,15 +1,10 @@
 package be.kuleuven.binker;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,30 +14,35 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import be.kuleuven.objects.DataBaseHandler;
+import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
+    public User user;
     private static final int selecter = 1000;
-    ImageView PhotoToBeUploaded;
+    ImageView ImageUploadPhoto;
     Button ChooseBtn;
-    private Bitmap bitmap;
-
+    Bitmap bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
 
         Spinner spinner = findViewById(R.id.SpinnerBeverages);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.Drinks,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Drinks, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-
+        user = getIntent().getParcelableExtra("User");
+        System.out.println(user);
         ChooseBtn = findViewById(R.id.BtnChoosePicture);
-        PhotoToBeUploaded = findViewById(R.id.THEPhoto);
+        ImageUploadPhoto = findViewById(R.id.ImageUploadPhoto);
+        ImageUploadPhoto.setImageBitmap(DataBaseHandler.Base64ToBitmapToSize(
+                user.getProfilePicture(), 400
+        ));
         ChooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,10 +65,10 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
                 //getting image from gallery
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 //Rescale the bitmap to 400px wide (avoid storing large images!)
-                bitmap = getResizedBitmap( bitmap, 400 );
+                bitmap = getResizedBitmap(bitmap, 400);
 
                 //Setting image to ImageView
-                PhotoToBeUploaded.setImageBitmap(bitmap);
+                ImageUploadPhoto.setImageBitmap(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -95,16 +95,28 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String text;
-        if(i != 0){
-        text = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();}
+        if(i != 0) {
+            text = adapterView.getItemAtPosition(i).toString();
+            Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+        }
 
     }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
+    public void onUploadPhoto_Clicked(View caller) {
+        user.setProfilePicture(DataBaseHandler.BitmapToBase64(bitmap));
+        Toast.makeText(this, "Profile picture is updated", Toast.LENGTH_SHORT).show();
+    }
+
+    public void btnFromProfileToContacts_Clicked(View caller) {
+        Intent intent = new Intent(this, FriendActivity.class);
+        intent.putExtra("User", user);
+        startActivity(intent);
+    }
 }
 

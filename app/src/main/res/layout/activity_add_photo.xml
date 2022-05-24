@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="onUploadPhoto_Clicked"
     tools:context=".AddPhotoActivity">
 
     <ImageView
@@ -32,6 +33,7 @@
         android:id="@+id/BtnUploadPhoto"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:onClick="onUploadPhoto_Clicked"
         android:text="UPLOAD"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,6 +46,7 @@
         android:layout_height="80dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:onClick="btnFromProfileToContacts_Clicked"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_back_left" />
@@ -67,6 +70,5 @@
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TxtYourDrink"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/TxtYourDrink" />
 </androidx.constraintlayout.widget.ConstraintLayout>
