@@ -81,19 +81,34 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
 
     public void OnBtnBackToPhotos_Clicked(View caller){
         Intent intent = new Intent(this, PhotoActivity.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onBtnUpload_Clicked(View caller) {
         ImageView PhotoToBeUploaded = findViewById(R.id.ImageUploadPhoto);
+
         BitmapDrawable drawable = (BitmapDrawable) PhotoToBeUploaded.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
-        bitmap = DataBaseHandler.resizeBitmap(bitmap, 30, 30);
+        byte[] bitmapArray = DataBaseHandler.bitmapToByteArray(bitmap);
+        int size = bitmapArray.length;
+        double scale = 0.99;
+        while (size * 1.3 > 90_000) {
+            System.out.println("loading.." + size);
+            bitmap = DataBaseHandler.resizeBitmap(bitmap,
+                    Math.round(bitmap.getWidth() * scale),
+                    Math.round(bitmap.getHeight() * scale));
+            size = DataBaseHandler.bitmapToByteArray(bitmap).length;
+            scale -= 0.01;
+        }
+        PhotoToBeUploaded.setImageBitmap(bitmap);
+        System.out.println(DataBaseHandler.bitmapToByteArray(bitmap).length);
         new DataBaseHandler(this).uploadPhoto(user, spinner.getSelectedItem().toString(), bitmap);
 
-        Intent intent = new Intent(this, PhotoActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, PhotoActivity.class);
+        //startActivity(intent);
     }
+
 }
 

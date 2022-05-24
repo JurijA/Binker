@@ -129,9 +129,16 @@ public class DataBaseHandler {
         );
     }
 
-    public static Bitmap resizeBitmap(Bitmap b, int width, int height) {
-        return Bitmap.createScaledBitmap(b, width, height, false);
+    public static Bitmap resizeBitmap(Bitmap b, long width, long height) {
+        return Bitmap.createScaledBitmap(b, (int) width, (int) height, false);
     }
+
+    public static byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -143,10 +150,10 @@ public class DataBaseHandler {
 
         String url = SUBMIT_URL + "uploadPhoto/" + user.getId() + "/"
                 + currentTime + "/" + 0 + "/" + beverage + "/" + photo1 + "";
-
+        System.out.println("url = " + url.length());
         Volley.newRequestQueue(this.context).add(
                 new JsonArrayRequest(
-                        Request.Method.GET,
+                        Request.Method.POST,
                         url,
                         null,
                         null,
