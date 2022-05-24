@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnBackToPhotos"
+        app:layout_constraintTop_toBottomOf="@+id/btnFromUploadInfoToContacts"
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <Button
@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/BtnBackToPhotos"
+        android:id="@+id/btnFromUploadInfoToContacts"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="10dp"

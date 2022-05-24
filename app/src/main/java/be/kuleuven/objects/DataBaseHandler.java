@@ -110,6 +110,21 @@ public class DataBaseHandler {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
+    public void updateUserProfilePicture(User user) {
+        String url = SUBMIT_URL + "updateUserProfilePicture/"
+                + user.getProfilePicture() + "/"
+                + user.getId() + "";
+        Volley.newRequestQueue(this.context).add(
+                new JsonArrayRequest(
+                        Request.Method.POST,
+                        url,
+                        null,
+                        System.out::println,
+                        error -> Log.d("DB: write picture", error.getMessage(), error)
+                )
+        );
+    }
+
     public void deleteFriendShip(Friendship friendship) {
         Integer idUser = friendship.getA().getId();
         Integer idFriend = friendship.getB().getId();
@@ -179,6 +194,7 @@ public class DataBaseHandler {
 
 
     public void getUserFromLogin(User user, final VolleyCallBack callBack) {
+        System.out.println(user);
         String requestURL = SUBMIT_URL + "getUserFromLogin" + "/" +
                 user.getEmail() + "" + "/" +
                 user.getPassword() + "";
@@ -188,6 +204,7 @@ public class DataBaseHandler {
                         requestURL,
                         null,
                         response -> {
+                            System.out.println(response);
                             if (response.length() > 0) {
                                 for (int i = 0; i < response.length(); i++) {
                                     try {

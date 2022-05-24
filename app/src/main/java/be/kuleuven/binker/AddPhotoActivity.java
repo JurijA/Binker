@@ -17,13 +17,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import be.kuleuven.objects.DataBaseHandler;
-import be.kuleuven.objects.User;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
+import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -53,15 +49,12 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         PhotoToBeUploaded.setImageBitmap(DataBaseHandler.Base64ToBitmapToSize(
                 user.getProfilePicture(), 400
         ));
-        ChooseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, selecter);
+        ChooseBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent, selecter);
 
-            }
         });
     }
 
@@ -117,14 +110,17 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
 
     }
 
-    public void OnBtnBackToPhotos_Clicked(View caller) {
-        Intent intent = new Intent(this, PhotoActivity.class);
+    public void btnFromProfileToContacts_Clicked(View caller) {
+        Intent intent = new Intent(this, FriendActivity.class);
         intent.putExtra("User", user);
         startActivity(intent);
     }
 
     public void onUploadPhoto_Clicked(View caller) {
         user.setProfilePicture(DataBaseHandler.BitmapToBase64(bitmap));
+        System.out.println("user pre" + user);
+        DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
+        dataBaseHandler.updateUserProfilePicture(user);
         Toast.makeText(this, "Profile picture is updated", Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,6 +1,8 @@
 package be.kuleuven.binker;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,15 +20,16 @@ import be.kuleuven.objects.User;
 public class DeleteFriendActivity extends AppCompatActivity {
     public static RecyclerView recyclerView;
     public static RecyclerAdapter adapter;
-    DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
+    private final DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
     private List<User> friends = new ArrayList<>();
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_delete);
         recyclerView = findViewById(R.id.recyclerDeleteFriends);
-        User user = getIntent().getParcelableExtra("User");
+        user = getIntent().getParcelableExtra("User");
         dataBaseHandler.getFriendsFromSynchronized(user,
                 new VolleyCallBack() {
                     @Override
@@ -45,6 +48,12 @@ public class DeleteFriendActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    public void onFromDeleteFriendToAddFriends_Clicked(View caller) {
+        Intent intent = new Intent(this, AddFriendsActivity.class);
+        intent.putExtra("User", user);
+        startActivity(intent);
     }
 
 }

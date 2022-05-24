@@ -7,16 +7,17 @@
 
 
     <ImageButton
-        android:id="@+id/BtnBackToPhotos"
+        android:id="@+id/btnFromUploadInfoToContacts"
 
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:onClick="btnFromAddFriendsToContacts_Clicked"
-        android:text="@string/back"
-        android:textColor="@color/black" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="49dp"
+        android:background="@drawable/button_back"
+        android:onClick="onBtnAddFriendBack_Clicked"
+        android:src="@android:drawable/ic_menu_revert" />
 
     <ImageView
         android:id="@+id/idIVQrcode"
@@ -53,12 +54,14 @@
         android:id="@+id/textView7"
         android:layout_width="256dp"
         android:layout_height="107dp"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="87dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="603dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginBottom="583dp"
+        android:layout_toEndOf="@+id/btnFromUploadInfoToContacts"
         android:gravity="center"
         android:text="@string/add_friend_title"
         android:textSize="34sp"
