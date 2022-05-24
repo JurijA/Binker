@@ -6,7 +6,6 @@
     <string name="login_text_register"> <u>Register here</u></string>
     <string name="login_notify_not_found">"Fuck you"</string>
     <string name="login_notify_found">"Welcome homo"</string>
-    <string name="login_hint_email">"Email"</string>
     <string name="login_hint_username">"Username"</string>
     <string name="login_hint_password">"Password"</string>
     <string name="login_text_remember_me">"Remember Me"</string>
@@ -19,7 +18,8 @@
     <string name="fb_login_fail">"facebook sucks anyway"</string>
     <string name="login_success">"Welcome back :)"</string>
     <string name="login_fail">"Wrong credentials"</string>
-    <string name="register_success">"Welcome "</string>
+    <string name="register_success">"Welcome Binker ;)"</string>
+    <string name="login_hint_email">"Email"</string>
     <string name="register_title">"Register"</string>
     <string name="register_hint_email">"Email</string>
     <string name="register_hint_confirm_password">"Confirm Password"</string>
@@ -33,10 +33,20 @@
     <string name="register_email_already_used">"This email is already used"</string>
     <string name="add_friend_title">"Add Friend"</string>
     <string name="add_friend_qr">"Your QR code"</string>
-    <string name="todo">TODO</string>
-    <string name="user_log_in_ic">user log in ic</string>
-    <string name="password_log_in_ic">password log in ic</string>
-    <string name="email_ic">email ic</string>
+    <string-array name="Drinks">
+        <item>Select drink</item>
+        <item>Cara Pils</item>
+        <item>Stella Artois</item>
+        <item>Jupiler</item>
+        <item>Westmalle</item>
+        <item>Duvel</item>
+        <item>Chateau Migraine</item>
+        <item>Tripel Karmeliet</item>
+        <item>Kasteel Rouge</item>
+        <item>Vodka Redbull</item>
+        <item>Appel Jenever</item>
+    </string-array>
+
     <string name="friends_ic">friends ic</string>
     <string name="friends_delete">Your friends</string>
     <string name="favourite_beer">Favourite Beer</string>
@@ -44,5 +54,10 @@
     <string name="name">Name</string>
     <string name="delete_icon">delete icon</string>
     <string name="show_friends_button">show friends button</string>
+
+    <string name="todo">TODO</string>
+    <string name="user_log_in_ic">user log in ic</string>
+    <string name="password_log_in_ic">password log in ic</string>
+    <string name="email_ic">email ic</string>
 
 </resources>

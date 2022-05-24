@@ -23,10 +23,12 @@ public class RecyclerAdapterPhotos extends RecyclerView.Adapter<RecyclerAdapterP
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {}
+
     @Override
     public int getItemCount() {
         return 20;
     }
+
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -36,9 +38,9 @@ public class RecyclerAdapterPhotos extends RecyclerView.Adapter<RecyclerAdapterP
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             photo = itemView.findViewById(R.id.THEPhoto);
-            name = itemView.findViewById(R.id.TxtFriendName);
+            name = itemView.findViewById(R.id.TxtViewNameFriend);
             beverage = itemView.findViewById(R.id.TxtViewBeverage);
-            profileFriend = itemView.findViewById(R.id.Btn_FriendProfile);
+            profileFriend = itemView.findViewById(R.id.BtnProfileFriend);
             likeButton = itemView.findViewById(R.id.BtnLike);
         }
     }

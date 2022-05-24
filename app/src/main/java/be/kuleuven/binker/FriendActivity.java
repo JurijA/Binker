@@ -9,6 +9,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.List;
 
 import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
@@ -19,6 +25,9 @@ public class FriendActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerAdapterFriends recyclerAdapter;
     DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
+    private RequestQueue requestQueue;
+    private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,6 +59,18 @@ public class FriendActivity extends AppCompatActivity {
 
     public void OnBtnPhotos_Clicked (View caller){
         Intent intent = new Intent(this, PhotoActivity.class);
+        startActivity(intent);
+    }
+
+    public Integer getFriendsCount (User user){
+        requestQueue = Volley.newRequestQueue(this);
+        Integer Friendscount = 0;
+        String requestURL = SUBMIT_URL + "getFriendsCount/" + user.getId();
+        return Friendscount;
+    }
+
+    public void onBtnUploadPhoto_Clicked (View caller){
+        Intent intent = new Intent(this, AddPhotoActivity.class);
         startActivity(intent);
     }
 }

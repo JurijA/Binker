@@ -105,8 +105,7 @@ public class LoginActivity extends AppCompatActivity {
         user.setEmail(inputEmail);
         user.setPassword(inputHashedPassword);
         dataBaseHandler.getUserFromLogin(
-                user,
-                new VolleyCallBack() {
+                user, new VolleyCallBack() {
                     @Override
                     public void onSuccess() {
                         User user = DataBaseHandler.user;

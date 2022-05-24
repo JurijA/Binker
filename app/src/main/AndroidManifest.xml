@@ -11,7 +11,7 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -19,13 +19,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_binker_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Binker" >
+        android:theme="@style/Theme.Binker">
+        <activity
+            android:name=".AddPhotoActivity"
+            android:exported="false" />
         <activity
             android:name=".FriendActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -23,6 +23,7 @@
         android:layout_height="80dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:onClick="onBtnUploadPhoto_Clicked"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_profile" />
