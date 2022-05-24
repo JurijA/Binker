@@ -39,4 +39,7 @@ public class PhotoActivity extends AppCompatActivity {
         intent.putExtra("User", user);
         startActivity(intent);
     }
+
+    public void onBtnRefresh_Clicked(View caller){
+    }
 }

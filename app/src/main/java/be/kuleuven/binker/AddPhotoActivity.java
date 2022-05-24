@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,6 +29,8 @@ import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +47,7 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
-
                 startActivityForResult(Intent.createChooser(intent, "Pick an image"),1);
-
             }
         });
     }
@@ -79,6 +80,17 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
     public void onNothingSelected(AdapterView<?> adapterView) {}
 
     public void OnBtnBackToPhotos_Clicked(View caller){
+        Intent intent = new Intent(this, PhotoActivity.class);
+        startActivity(intent);
+    }
+
+    public void onBtnUpload_Clicked(View caller){
+        ImageView PhotoToBeUploaded = findViewById(R.id.ImageUploadPhoto);
+        BitmapDrawable drawable = (BitmapDrawable) PhotoToBeUploaded.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        String encodedPhoto = DataBaseHandler.BitmapToBase64(bitmap);
+        DataBaseHandler.uploadPhoto(user, String.valueOf(findViewById(Spinner)),encodedPhoto);
+
         Intent intent = new Intent(this, PhotoActivity.class);
         startActivity(intent);
     }

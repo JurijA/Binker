@@ -6,23 +6,21 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
-
 import androidx.annotation.RequiresApi;
-
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
-
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import be.kuleuven.interfaces.VolleyCallBack;
+
 
 public class DataBaseHandler {
     private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
@@ -33,6 +31,7 @@ public class DataBaseHandler {
     public static User user = new User();
     public static User userFromId = new User();
     public Context context;
+    private Object DateTimeFormatter;
 
     public DataBaseHandler(Context context) {
         this.context = context;
@@ -123,6 +122,23 @@ public class DataBaseHandler {
                         error -> Log.d("DB: write picture", error.getMessage(), error)
                 )
         );
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void uploadPhoto (User user, String beverage, String photo){
+        LocalDateTime now = LocalDateTime.now();
+        Timestamp timestamp = Timestamp.valueOf(String.valueOf(now));
+        String url = SUBMIT_URL + "uploadPhoto/" + user.getId() + "/"
+                + timestamp + "/" + 0 + "/" + beverage + "/" + photo + "";
+
+        Volley.newRequestQueue(this.context).add(
+                new JsonArrayRequest(
+                        Request.Method.POST,
+                        url,
+                        null,
+                        null,
+                        null)
+                );
     }
 
     public void deleteFriendShip(Friendship friendship) {
