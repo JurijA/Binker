@@ -42,5 +42,7 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     public void onBtnRefresh_Clicked(View caller){
+        Intent intent = new Intent(this, PhotoActivity.class);
+        startActivity(intent);
     }
 }
