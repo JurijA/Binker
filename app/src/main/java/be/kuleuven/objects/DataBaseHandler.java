@@ -37,7 +37,6 @@ public class DataBaseHandler {
     public static User user = new User();
     public static User userFromId = new User();
     public Context context;
-    private Object DateTimeFormatter;
 
     public DataBaseHandler(Context context) {
         this.context = context;
@@ -137,7 +136,6 @@ public class DataBaseHandler {
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void uploadPhoto(User user, String beverage, String photo) {
-
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(now);
@@ -145,12 +143,9 @@ public class DataBaseHandler {
         String url = SUBMIT_URL + "uploadPhoto/" + user.getId() + "/"
                 + currentTime + "/" + 0 + "/" + beverage + "/" + photo + "";
 
-        System.out.println(url);
-        System.out.println(user);
-        System.out.println(photo);
         Volley.newRequestQueue(this.context).add(
                 new JsonArrayRequest(
-                        Request.Method.GET,
+                        Request.Method.POST,
                         url,
                         null,
                         null,
