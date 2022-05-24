@@ -22,6 +22,9 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+
+import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -29,6 +32,8 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
     ImageView PhotoToBeUploaded;
     Button ChooseBtn;
     private Bitmap bitmap;
+    private User user;
+    private static List<User> listUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +109,12 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public void OnBtnBackToPhotos_Clicked (View caller){
+        Intent intent = new Intent(this, PhotoActivity.class);
+        intent.putExtra("User", user);
+        startActivity(intent);
     }
 
 }

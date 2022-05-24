@@ -7,7 +7,7 @@
     android:layout_marginTop="16dp">
 
     <TextView
-        android:id="@+id/text_gchat_date_other"
+        android:id="@+id/text_chat_date_other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -15,33 +15,33 @@
         android:paddingTop="4dp"
         android:paddingEnd="8dp"
         android:paddingBottom="4dp"
-        android:text="June 10"
+        android:text="March 10"
         android:textColor="#C0C0C0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/image_gchat_profile_other"
+        android:id="@+id/image_chat_profile_other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:contentDescription="User Icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_gchat_date_other" />
+        app:layout_constraintTop_toBottomOf="@+id/text_chat_date_other" />
 
     <TextView
-        android:id="@+id/text_gchat_user_other"
+        android:id="@+id/text_chat_user_other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="John Grady Cole"
+        android:text="Random Friend"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/image_gchat_profile_other"
-        app:layout_constraintTop_toBottomOf="@+id/text_gchat_date_other" />
+        app:layout_constraintStart_toEndOf="@+id/image_chat_profile_other"
+        app:layout_constraintTop_toBottomOf="@+id/text_chat_date_other" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_gchat_message_other"
+        android:id="@+id/card_chat_message_other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#eef1f6"
@@ -49,17 +49,17 @@
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
-        app:layout_constraintStart_toEndOf="@+id/image_gchat_profile_other"
-        app:layout_constraintTop_toBottomOf="@+id/text_gchat_user_other">
+        app:layout_constraintStart_toEndOf="@+id/image_chat_profile_other"
+        app:layout_constraintTop_toBottomOf="@+id/text_chat_user_other">
 
         <LinearLayout
-            android:id="@+id/layout_gchat_container_other"
+            android:id="@+id/layout_chat_container_other"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text_gchat_message_other"
+                android:id="@+id/text_chat_message_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -76,14 +76,14 @@
 
 
     <TextView
-        android:id="@+id/text_gchat_timestamp_other"
+        android:id="@+id/text_chat_timestamp_other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="8:00"
         android:textColor="#C0C0C0"
         android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/card_gchat_message_other"
-        app:layout_constraintStart_toEndOf="@+id/card_gchat_message_other" />
+        app:layout_constraintBottom_toBottomOf="@+id/card_chat_message_other"
+        app:layout_constraintStart_toEndOf="@+id/card_chat_message_other" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

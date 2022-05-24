@@ -56,11 +56,13 @@ public class FriendActivity extends AppCompatActivity {
 
     public void onBtnFriendChat_Clicked(View caller){
         Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 
     public void OnBtnPhotos_Clicked (View caller){
         Intent intent = new Intent(this, PhotoActivity.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 
@@ -69,10 +71,5 @@ public class FriendActivity extends AppCompatActivity {
         Integer Friendscount = 0;
         String requestURL = SUBMIT_URL + "getFriendsCount/" + user.getId();
         return Friendscount;
-    }
-
-    public void onBtnUploadPhoto_Clicked (View caller){
-        Intent intent = new Intent(this, AddPhotoActivity.class);
-        startActivity(intent);
     }
 }
