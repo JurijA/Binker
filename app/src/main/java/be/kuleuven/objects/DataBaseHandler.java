@@ -1,24 +1,30 @@
 package be.kuleuven.objects;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
+
 import androidx.annotation.RequiresApi;
+
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
+
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import be.kuleuven.interfaces.VolleyCallBack;
 
 
@@ -71,13 +77,13 @@ public class DataBaseHandler {
     public static Bitmap Base64ToBitmapToSize(String base64, int width, int height) {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        return Bitmap.createScaledBitmap(decodedByte, width, height, true);
+        return resizeBitmap(decodedByte, width, height);
     }
 
     public static Bitmap Base64ToBitmapToSize(String base64, int size) {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        return Bitmap.createScaledBitmap(decodedByte, size, size, true);
+        return resizeBitmap(decodedByte, size, size);
     }
 
     public static boolean isValidEmailAddress(String email) {
@@ -124,21 +130,32 @@ public class DataBaseHandler {
         );
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void uploadPhoto (User user, String beverage, String photo){
-        LocalDateTime now = LocalDateTime.now();
-        Timestamp timestamp = Timestamp.valueOf(String.valueOf(now));
-        String url = SUBMIT_URL + "uploadPhoto/" + user.getId() + "/"
-                + timestamp + "/" + 0 + "/" + beverage + "/" + photo + "";
+    public static Bitmap resizeBitmap(Bitmap b, int width, int height) {
+        return Bitmap.createScaledBitmap(b, width, height, false);
+    }
 
+    @SuppressLint("SimpleDateFormat")
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void uploadPhoto(User user, String beverage, String photo) {
+
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(now);
+
+        String url = SUBMIT_URL + "uploadPhoto/" + user.getId() + "/"
+                + currentTime + "/" + 0 + "/" + beverage + "/" + photo + "";
+
+        System.out.println(url);
+        System.out.println(user);
+        System.out.println(photo);
         Volley.newRequestQueue(this.context).add(
                 new JsonArrayRequest(
-                        Request.Method.POST,
+                        Request.Method.GET,
                         url,
                         null,
                         null,
                         null)
-                );
+        );
     }
 
     public void deleteFriendShip(Friendship friendship) {

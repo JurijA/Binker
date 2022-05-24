@@ -32,6 +32,7 @@
         android:id="@+id/BtnUploadPhoto"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:onClick="onBtnUpload_Clicked"
         android:text="UPLOAD"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"

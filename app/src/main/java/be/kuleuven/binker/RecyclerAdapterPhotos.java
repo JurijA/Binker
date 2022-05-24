@@ -30,11 +30,12 @@ public class RecyclerAdapterPhotos extends RecyclerView.Adapter<RecyclerAdapterP
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView photo;
-        TextView name,beverage,likecount;
+        TextView name, beverage, likeCount;
         ImageButton profileFriend, likeButton;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             photo = itemView.findViewById(R.id.THEPhoto);
@@ -42,7 +43,7 @@ public class RecyclerAdapterPhotos extends RecyclerView.Adapter<RecyclerAdapterP
             beverage = itemView.findViewById(R.id.TxtViewBeverage);
             profileFriend = itemView.findViewById(R.id.BtnProfileFriend);
             likeButton = itemView.findViewById(R.id.BtnLike);
-            likecount = itemView.findViewById(R.id.TxtLikesCount);
+            likeCount = itemView.findViewById(R.id.TxtLikesCount);
         }
     }
 

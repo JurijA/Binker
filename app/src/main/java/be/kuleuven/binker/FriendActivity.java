@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import be.kuleuven.objects.User;
 
 public class FriendActivity extends AppCompatActivity {
@@ -26,11 +27,6 @@ public class FriendActivity extends AppCompatActivity {
         recyclerAdapter = new RecyclerAdapterFriends();
         recyclerView.setAdapter(recyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    public void onBtnGroups_Clicked (View caller){
-        Intent intent = new Intent(this, GroupActivity.class);
-        startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -56,6 +52,7 @@ public class FriendActivity extends AppCompatActivity {
     public void onBtnUploadPhoto_Clicked (View caller){
         Intent intent = new Intent(this, AddPhotoActivity.class);
         intent.putExtra("User", user);
+
         startActivity(intent);
     }
 }

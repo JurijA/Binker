@@ -3,12 +3,10 @@ package be.kuleuven.binker;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.renderscript.ScriptGroup;
+import android.util.Size;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,11 +16,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.List;
 
 import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
@@ -30,17 +28,19 @@ import be.kuleuven.objects.User;
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private User user;
+    private final Size photo = new Size(250, 250);
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
-        Spinner spinner = findViewById(R.id.SpinnerBeverages);
+        spinner = findViewById(R.id.SpinnerBeverages);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Drinks, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-
+        user = getIntent().getParcelableExtra("User");
         Button button = findViewById(R.id.BtnChoosePicture);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +61,7 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
             try {
                 InputStream inputStream = getContentResolver().openInputStream(data.getData());
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                imageView.setImageBitmap(bitmap);
+                imageView.setImageBitmap(DataBaseHandler.resizeBitmap(bitmap, photo.getWidth(), photo.getHeight()));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -84,12 +84,13 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onBtnUpload_Clicked(View caller){
         ImageView PhotoToBeUploaded = findViewById(R.id.ImageUploadPhoto);
         BitmapDrawable drawable = (BitmapDrawable) PhotoToBeUploaded.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         String encodedPhoto = DataBaseHandler.BitmapToBase64(bitmap);
-        DataBaseHandler.uploadPhoto(user, String.valueOf(findViewById(Spinner)),encodedPhoto);
+        new DataBaseHandler(this).uploadPhoto(user, spinner.getSelectedItem().toString(), encodedPhoto);
 
         Intent intent = new Intent(this, PhotoActivity.class);
         startActivity(intent);
