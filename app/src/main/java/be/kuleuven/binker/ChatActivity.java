@@ -2,19 +2,23 @@ package be.kuleuven.binker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
+import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.Friendship;
 
 public class ChatActivity extends AppCompatActivity {
     private TextView TxtFriendName;
     private RecyclerView recyclerView;
     private Friendship friendship;
-
+    private List<Message> messageList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +27,7 @@ public class ChatActivity extends AppCompatActivity {
         friendship = getIntent().getParcelableExtra("Friendship");
         TxtFriendName = findViewById(R.id.TxtFriendName);
         TxtFriendName.setText(friendship.getB().getName());
+        new DataBaseHandler(this).get
     }
 
     public void onBtnBackToContacts_Clicked(View caller){

@@ -15,11 +15,6 @@ import java.util.List;
 import be.kuleuven.interfaces.VolleyCallBack;
 import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.RecyclerAdapterChatHeads;
-import java.util.ArrayList;
-import java.util.List;
-
-import be.kuleuven.interfaces.VolleyCallBack;
-import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
 
 public class FriendActivity extends AppCompatActivity {
@@ -29,11 +24,6 @@ public class FriendActivity extends AppCompatActivity {
     private RecyclerAdapterChatHeads adapter;
     private List<User> friends;
     private User user;
-    RecyclerView recyclerView;
-    be.kuleuven.binker.RecyclerAdapterFriends recyclerAdapter;
-    private List<User> friends = new ArrayList<>();
-    private User user;
-    private final DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +41,6 @@ public class FriendActivity extends AppCompatActivity {
                     public void onSuccess() {
 
                         friends = DataBaseHandler.friends;
-                        System.out.println("vrienden" + friends);
                         adapter = new RecyclerAdapterChatHeads(user, friends, FriendActivity.this);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(FriendActivity.this));

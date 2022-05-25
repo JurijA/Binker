@@ -151,6 +151,13 @@ public class DataBaseHandler {
         );
     }
 
+    public void getChat(Friendship friendship) {
+        ProgressDialog progressDialog = new ProgressDialog(this.context);
+        progressDialog.setMessage("Uploading, please wait...");
+        progressDialog.show();
+        String url = SUBMIT_URL + ""
+    }
+
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void uploadPhoto(Photo photo) {
