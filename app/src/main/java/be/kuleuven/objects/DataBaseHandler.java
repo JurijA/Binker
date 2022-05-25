@@ -182,6 +182,18 @@ public class DataBaseHandler {
                 .anyMatch(user -> user.getEmail().equals(email));
     }
 
+    /**
+
+    public void getPhotosFromFriends (User user, final VolleyCallBack volleyCallBack){
+        String url = SUBMIT_URL + "getPhotosOfFriends/" + user.getId();
+        Volley.newRequestQueue(this.context).add(
+                new JsonArrayRequest(
+                        Request.Method.GET,
+                )
+        );
+    }
+     */
+
     public void getFriendsFromSynchronized(User user, final VolleyCallBack volleyCallBack) {
         String url = SUBMIT_URL + "getFriendsFrom/" + user.getId();
         Volley.newRequestQueue(this.context).add(
