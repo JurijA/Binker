@@ -46,7 +46,7 @@ public class RecyclerAdapterChat extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ChatMessage message = (ChatMessage) chatMessageList.get(position);
-        switch (holder.getItemViewType()) {
+        /*switch (holder.getItemViewType()) {
             case SENT:
                 ((MeMessageViewHolder) holder).bind(message);
                 break;
@@ -54,7 +54,7 @@ public class RecyclerAdapterChat extends RecyclerView.Adapter {
                 ((FriendMessageViewHolder) holder).bind(message);
             default:
                 System.out.println("oeoe");
-        }
+        }*/
     }
 
     @Override

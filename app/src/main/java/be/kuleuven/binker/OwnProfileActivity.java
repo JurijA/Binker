@@ -25,10 +25,11 @@ public class OwnProfileActivity extends AppCompatActivity {
         user = getIntent().getParcelableExtra("User");
         TextView OwnUserName = findViewById(R.id.TxtOwnNameInfo);
         TextView userSince = findViewById(R.id.TxtDateUserSince);
-        Button delacc = findViewById(R.id.Btn_DeleteAccount);
         OwnProfilePicture.setImageBitmap(DataBaseHandler.Base64ToBitmapToSize(user.getProfilePicture(),200));
         OwnUserName.setText(user.getName());
-        userSince.setText(user.getUserSince());
+        char[] month_year_day = new char[11];
+        user.getUserSince().getChars(0,11,month_year_day,0);
+        userSince.setText(String.valueOf(month_year_day));
 
 
     }

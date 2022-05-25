@@ -192,7 +192,7 @@ public class DataBaseHandler {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("user", photo.getUser().getId() + "");
-                params.put("time", getDate());
+                params.put("time", photo.getTimestamp().toString());
                 params.put("likes", photo.getLikeCount() + "");
                 params.put("drink", photo.getBeverage() + "");
                 params.put("photo", photoEncoded);
@@ -444,7 +444,38 @@ public class DataBaseHandler {
                         null, null, System.out::println
                 ));
     }
+    public void addUser2(User user){
+        ProgressDialog progressDialog = new ProgressDialog(this.context);
+        progressDialog.setMessage("Uploading, please wait...");
+        progressDialog.show();
 
+        String url = SUBMIT_URL + "addUser";
+
+        StringRequest submitRequest = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(this.context, "Succesfully registered", Toast.LENGTH_SHORT).show();
+                },
+                error -> Toast.makeText(this.context, "Failed to register. Try again.", Toast.LENGTH_LONG).show()
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("uid", user.getId() + "");
+                params.put("username", user.getName()+"");
+                params.put("upass", user.getPassword() + "");
+                params.put("uprofpic", user.getProfilePicture() + "");
+                params.put("uday", user.getBirthday()+"");
+                params.put("ugender", user.getGender());
+                params.put("ulink", user.getLink());
+                params.put("uloc", user.getLocation());
+                params.put("uemail", user.getEmail());
+                params.put("usince", user.getUserSince());
+                return params;
+            }
+        };
+        newRequestQueue(this.context).add(submitRequest);
+    }
     public void addUser(User user) {
         newRequestQueue(this.context).add(
                 new JsonArrayRequest(

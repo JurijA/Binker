@@ -73,8 +73,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/imageAddFriend"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="180dp"
-        android:layout_marginBottom="265dp"
+        android:layout_marginEnd="171dp"
+        android:layout_marginBottom="361dp"
         android:text="@string/add_friend_qr"
         android:textColor="#38C9FF" />
 

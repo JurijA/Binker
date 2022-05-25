@@ -43,7 +43,7 @@ public class ChatMessage {
 
     public String getMonthAndDay() {
         char[] month_day = new char[5];
-        this.getDay().getChars(0, 11, month_day, 0);
+        this.getDay().getChars(5, 11, month_day, 0);
         return String.valueOf(month_day);
     }
 
