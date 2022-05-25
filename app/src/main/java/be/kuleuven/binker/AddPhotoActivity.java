@@ -1,6 +1,5 @@
 package be.kuleuven.binker;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import be.kuleuven.objects.DataBaseHandler;
@@ -48,13 +46,10 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         spinner.setOnItemSelectedListener(this);
         user = getIntent().getParcelableExtra("User");
         Button button = findViewById(R.id.BtnChoosePicture);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent, "Pick an image"),1);
-            }
+        button.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, "Pick an image"), 1);
         });
     }
 
@@ -97,34 +92,35 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
 
         BitmapDrawable drawable = (BitmapDrawable) PhotoToBeUploaded.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int size = DataBaseHandler.bitmapToByteArray(bitmap).length;
-        bitmap = DataBaseHandler.resizeBitmap(bitmap,
-                Math.round(width * 0.02),
-                Math.round(height * 0.02));
-        double scale = 1;
-        while (size * 1.35 > 1500) {
-            System.out.println(size);
-            bitmap = DataBaseHandler.resizeBitmap(bitmap,
-                    Math.round(bitmap.getWidth() * scale),
-                    Math.round(bitmap.getHeight() * scale));
-            size = DataBaseHandler.bitmapToByteArray(bitmap).length;
-            scale -= 0.01;
 
-        }
-        //84182- 1.5->
-        System.out.println(DataBaseHandler.BitmapToBase64(bitmap).length());
+        bitmap = resizeBitmapToBase64Length(bitmap, 1000);
+
+
+        Timestamp currentTime = new Timestamp(new Date().getTime());
 
         PhotoToBeUploaded.setImageBitmap(bitmap);
-        System.out.println(DataBaseHandler.bitmapToByteArray(bitmap).length);
         String beverage = spinner.getSelectedItem().toString();
-        Photo photo = new Photo(bitmap,user,beverage,currentTime,0);
+        Photo photo = new Photo(bitmap, user, beverage, currentTime, 0);
         new DataBaseHandler(this).uploadPhoto(photo);
 
         //Intent intent = new Intent(this, PhotoActivity.class);
         //intent.putExtra("User",user);
         //startActivity(intent);
+    }
+
+    public Bitmap resizeBitmapToBase64Length(Bitmap bitmap, Integer base64Length) {
+
+        double scale = 1;
+        int size = DataBaseHandler.bitmapToByteArray(bitmap).length;
+        while (size * 1.35 > 1500) {
+            bitmap = DataBaseHandler.resizeBitmap(bitmap,
+                    Math.round(bitmap.getWidth() * scale),
+                    Math.round(bitmap.getHeight() * scale));
+            size = DataBaseHandler.bitmapToByteArray(bitmap).length;
+            scale -= 0.02;
+
+        }
+        return bitmap;
     }
 
 }

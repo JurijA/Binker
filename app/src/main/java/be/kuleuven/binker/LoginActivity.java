@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                         request.executeAsync();
                     }
                 });
+
     }
 
     public void onRegisterWithFacebook_Clicked(View caller) {
@@ -121,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
         );
+
     }
 
 

@@ -32,6 +32,7 @@ public class PhotoActivity extends AppCompatActivity {
 
     public void onBtnBackToFriendActivity_Clicked(View caller){
         Intent intent = new Intent(this, FriendActivity.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 

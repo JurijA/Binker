@@ -6,10 +6,10 @@ import java.sql.Timestamp;
 
 public class Photo {
 
-    private Bitmap bitmapPhoto;
-    private User user;
-    private String beverage;
-    private Timestamp timestamp;
+    private final Bitmap bitmapPhoto;
+    private final User user;
+    private final String beverage;
+    private final Timestamp timestamp;
     private Integer likecount;
 
     public Photo(Bitmap bitmap, User user, String beverage, Timestamp timestamp, Integer likecount) {
@@ -38,6 +38,10 @@ public class Photo {
 
     public Integer getLikecount() {
         return likecount;
+    }
+
+    public void setLikecount(Integer likecount) {
+        this.likecount = likecount;
     }
 
 

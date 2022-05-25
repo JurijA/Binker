@@ -3,7 +3,6 @@ package be.kuleuven.binker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,20 +34,19 @@ public class DeleteFriendActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess() {
                         friends = DataBaseHandler.friends;
-
                         adapter = new RecyclerAdapter(user, friends);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(DeleteFriendActivity.this));
-
                     }
 
                     @Override
                     public void onFail() {
-                        Toast.makeText(DeleteFriendActivity.this, "Couldn't find friends", Toast.LENGTH_SHORT).show();
+                        System.out.println("fuck");
                     }
                 }
         );
     }
+
 
     public void onFromDeleteFriendToAddFriends_Clicked(View caller) {
         Intent intent = new Intent(this, AddFriendsActivity.class);
