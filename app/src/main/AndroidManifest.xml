@@ -25,6 +25,7 @@
         <activity
             android:name=".AddPhotoActivity"
             android:exported="false"/>
+        <activity android:name=".ChatActivity" />
         <activity
             android:name=".PhotoActivity"
             android:exported="false"/>

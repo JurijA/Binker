@@ -10,13 +10,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
+import be.kuleuven.interfaces.VolleyCallBack;
+import be.kuleuven.objects.DataBaseHandler;
+import be.kuleuven.objects.RecyclerAdapterChatHeads;
 import be.kuleuven.objects.User;
 
 public class FriendActivity extends AppCompatActivity {
 
+    private final DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
+    private RecyclerView recyclerView;
+    private RecyclerAdapterChatHeads adapter;
+    private List<User> friends;
     private User user;
-    RecyclerView recyclerView;
-    RecyclerAdapterFriends recyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +31,28 @@ public class FriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend);
         user = getIntent().getParcelableExtra("User");
         recyclerView = findViewById(R.id.recyclerViewFriends);
-        recyclerAdapter = new RecyclerAdapterFriends();
-        recyclerView.setAdapter(recyclerAdapter);
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dataBaseHandler.getFriendsFromSynchronized(user,
+                new VolleyCallBack() {
+
+                    @Override
+                    public void onSuccess() {
+
+                        friends = DataBaseHandler.friends;
+                        System.out.println("vrienden" + friends);
+                        adapter = new RecyclerAdapterChatHeads(user, friends, FriendActivity.this);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(FriendActivity.this));
+                    }
+
+                    @Override
+                    public void onFail() {
+                        System.out.println("fuck");
+                    }
+                }
+        );
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

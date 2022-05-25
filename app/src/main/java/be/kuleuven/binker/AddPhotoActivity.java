@@ -3,10 +3,10 @@ package be.kuleuven.binker;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Size;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,12 +29,10 @@ import be.kuleuven.objects.Photo;
 import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    public static Integer MAX_POST_SIZE = 100000;
+
 
     private User user;
-    private final Size photo = new Size(250, 250);
     private Spinner spinner;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +42,7 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
         user = getIntent().getParcelableExtra("User");
         Button button = findViewById(R.id.BtnChoosePicture);
         button.setOnClickListener(view -> {
@@ -62,7 +61,7 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
             try {
                 InputStream inputStream = getContentResolver().openInputStream(data.getData());
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                imageView.setImageBitmap(bitmap);
+                imageView.setImageBitmap(getResizedBitmap(bitmap, 200));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -93,35 +92,32 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         BitmapDrawable drawable = (BitmapDrawable) PhotoToBeUploaded.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
 
-        bitmap = resizeBitmapToBase64Length(bitmap, 1000);
-
-
         Timestamp currentTime = new Timestamp(new Date().getTime());
 
-        PhotoToBeUploaded.setImageBitmap(bitmap);
         String beverage = spinner.getSelectedItem().toString();
         Photo photo = new Photo(bitmap, user, beverage, currentTime, 0);
         new DataBaseHandler(this).uploadPhoto(photo);
-
-        //Intent intent = new Intent(this, PhotoActivity.class);
-        //intent.putExtra("User",user);
-        //startActivity(intent);
+        Intent intent = new Intent(this, PhotoActivity.class);
+        intent.putExtra("User", user);
+        startActivity(intent);
     }
 
-    public Bitmap resizeBitmapToBase64Length(Bitmap bitmap, Integer base64Length) {
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scale = ((float) newWidth) / width;
 
-        double scale = 1;
-        int size = DataBaseHandler.bitmapToByteArray(bitmap).length;
-        while (size * 1.35 > 1500) {
-            bitmap = DataBaseHandler.resizeBitmap(bitmap,
-                    Math.round(bitmap.getWidth() * scale),
-                    Math.round(bitmap.getHeight() * scale));
-            size = DataBaseHandler.bitmapToByteArray(bitmap).length;
-            scale -= 0.02;
+        // We create a matrix to transform the image
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
 
-        }
-        return bitmap;
+        // Create the new bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
+
 
 }
 

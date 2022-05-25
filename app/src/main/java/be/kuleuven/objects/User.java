@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -182,6 +183,21 @@ public class User implements Parcelable {
 
     public String getProfilePicture() {
         return info.get("profilePicture") == null ? "pic" : info.get("profilePicture");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(getEmail(), user.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id, info);
+        result = 31 * result + Arrays.hashCode(keys);
+        return result;
     }
 
     @NonNull

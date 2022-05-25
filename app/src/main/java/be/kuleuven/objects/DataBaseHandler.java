@@ -1,18 +1,22 @@
 package be.kuleuven.objects;
 
+import static com.android.volley.toolbox.Volley.newRequestQueue;
+
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 
@@ -22,7 +26,9 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import be.kuleuven.interfaces.VolleyCallBack;
@@ -114,19 +120,10 @@ public class DataBaseHandler {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    public void updateUserProfilePicture(User user) {
-        String url = SUBMIT_URL + "updateUserProfilePicture/"
-                + user.getProfilePicture() + "/"
-                + user.getId() + "";
-        Volley.newRequestQueue(this.context).add(
-                new JsonArrayRequest(
-                        Request.Method.POST,
-                        url,
-                        null,
-                        System.out::println,
-                        error -> Log.d("DB: write picture", error.getMessage(), error)
-                )
-        );
+    public static String getDate() {
+        Date now = new Date();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(now);
     }
 
     public static Bitmap resizeBitmap(Bitmap b, long width, long height) {
@@ -139,26 +136,51 @@ public class DataBaseHandler {
         return stream.toByteArray();
     }
 
-
-    @SuppressLint("SimpleDateFormat")
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void uploadPhoto(Photo photo) {
-        Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = sdf.format(now);
-        String photoEncoded = DataBaseHandler.BitmapToBase64(photo.getBitmapPhoto());
-
-        String url = SUBMIT_URL + "uploadPhoto/" + user.getId() + "/"
-                + currentTime + "/" + 0 + "/" + photo.getBeverage() + "/" + photoEncoded + "";
-        System.out.println("url = " + url.length());
-        Volley.newRequestQueue(this.context).add(
+    public void updateUserProfilePicture(User user) {
+        String url = SUBMIT_URL + "updateUserProfilePicture/"
+                + user.getProfilePicture() + "/"
+                + user.getId() + "";
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.POST,
                         url,
                         null,
-                        null,
-                        null)
+                        System.out::println,
+                        error -> Log.d("DB: write picture", error.getMessage(), error)
+                )
         );
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void uploadPhoto(Photo photo) {
+        ProgressDialog progressDialog = new ProgressDialog(this.context);
+        progressDialog.setMessage("Uploading, please wait...");
+        progressDialog.show();
+
+        String photoEncoded = DataBaseHandler.BitmapToBase64(photo.getBitmapPhoto());
+
+        String url = SUBMIT_URL + "uploadPhoto";
+
+        StringRequest submitRequest = new StringRequest(Request.Method.POST, url,
+                response -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(this.context, "Post request executed", Toast.LENGTH_SHORT).show();
+                },
+                error -> Toast.makeText(this.context, "Post request failed", Toast.LENGTH_LONG).show()
+        ) { //NOTE THIS PART: here we are passing the parameter to the webservice, NOT in the URL!
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("user", photo.getUser().getId() + "");
+                params.put("time", getDate());
+                params.put("likes", photo.getLikeCount() + "");
+                params.put("drink", photo.getBeverage() + "");
+                params.put("photo", photoEncoded);
+                return params;
+            }
+        };
+        newRequestQueue(this.context).add(submitRequest);
     }
 
     public void deleteFriendShip(Friendship friendship) {
@@ -169,7 +191,7 @@ public class DataBaseHandler {
                 idFriend + "/" +
                 idUser + "/" +
                 idFriend;
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.GET,
                         url,
@@ -198,7 +220,7 @@ public class DataBaseHandler {
 
     public void getFriendsFromSynchronized(User user, final VolleyCallBack volleyCallBack) {
         String url = SUBMIT_URL + "getFriendsFrom/" + user.getId();
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.GET,
                         url,
@@ -212,17 +234,14 @@ public class DataBaseHandler {
 
                                     int finalI = i;
                                     getUserFromId(idFriend, new VolleyCallBack() {
-
                                         @Override
                                         public void onSuccess() {
-
-
-                                            DataBaseHandler.friends.add(DataBaseHandler.userFromId);
-                                            if (finalI == response.length() - 1) {
-                                                volleyCallBack.onSuccess();
-                                            } else {
-                                                System.out.println(finalI);
+                                            if (friends.stream().noneMatch(userFromId::equals)) {
+                                                DataBaseHandler.friends.add(userFromId);
                                             }
+
+                                            if (finalI == response.length() - 1)
+                                                volleyCallBack.onSuccess();
                                         }
 
                                         @Override
@@ -242,11 +261,14 @@ public class DataBaseHandler {
 
 
     public void getUserFromLogin(User user, final VolleyCallBack callBack) {
+        ProgressDialog progressDialog = new ProgressDialog(this.context);
+        progressDialog.setMessage("Checking, please wait...");
+        progressDialog.show();
         System.out.println(user);
         String requestURL = SUBMIT_URL + "getUserFromLogin" + "/" +
                 user.getEmail() + "" + "/" +
                 user.getPassword() + "";
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.GET,
                         requestURL,
@@ -271,6 +293,8 @@ public class DataBaseHandler {
                                         e.printStackTrace();
                                     }
                                 }
+
+                                progressDialog.dismiss();
                                 callBack.onSuccess();
                             } else {
                                 callBack.onFail();
@@ -283,7 +307,7 @@ public class DataBaseHandler {
     public void friendShipExists(Friendship friendship, final VolleyCallBack volleyCallBack) {
         String requestURL = SUBMIT_URL + "getFriendsFrom/" +
                 friendship.getA().getId() + "";
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.GET,
                         requestURL,
@@ -298,7 +322,7 @@ public class DataBaseHandler {
 
     public void getUserFromId(Integer id, final VolleyCallBack volleyCallBack) {
         String requestURL = SUBMIT_URL + "getUserFromId/" + id;
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.GET,
                         requestURL,
@@ -332,7 +356,7 @@ public class DataBaseHandler {
 
     public void getFriends() {
         String requestURL = SUBMIT_URL + "selectFriends";
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.POST,
                         requestURL,
@@ -346,6 +370,7 @@ public class DataBaseHandler {
                                             getUserFromId(response.getJSONObject(i).getInt("idUserB"))
                                     );
                                     friendShips.add(friendship);
+                                    System.out.println("does exost" + friendship);
                                 }
                             } catch (Exception e) {
                                 Log.d("JSONObject: ", e.getMessage(), e);
@@ -357,7 +382,7 @@ public class DataBaseHandler {
 
     public void getUsers() {
         String requestURL = SUBMIT_URL + "selectUsers";
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.POST,
                         requestURL,
@@ -387,7 +412,7 @@ public class DataBaseHandler {
     }
 
     public void addFriendShip(Friendship friendship) {
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.GET,
                         SUBMIT_URL + "addFriendship/"
@@ -399,7 +424,7 @@ public class DataBaseHandler {
     }
 
     public void addUser(User user) {
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.GET,
                         SUBMIT_URL + "addUser/"
@@ -421,7 +446,7 @@ public class DataBaseHandler {
     public void getAmountUsers() {
 
         String url = SUBMIT_URL + "getUsersSize";
-        Volley.newRequestQueue(this.context).add(
+        newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.POST,
                         url,
