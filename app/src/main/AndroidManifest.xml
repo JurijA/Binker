@@ -11,24 +11,26 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_binker_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_binker_launcher_round"
         android:supportsRtl="true"
-        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.Binker">
         <activity
+            android:name=".OwnProfiileActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddPhotoActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".PhotoActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".FriendActivity"
             android:exported="false" />
@@ -44,8 +46,8 @@
         <activity android:name=".AddFriendsActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".DeleteFriendActivity" />
-        <activity android:name=".ChatActivity"/>
-        <activity android:name=".FriendInfoActivity"/>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".FriendInfoActivity" />
         <activity
             android:name="be.kuleuven.objects.Capture"
             android:screenOrientation="fullSensor"

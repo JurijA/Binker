@@ -77,7 +77,12 @@ public class FriendActivity extends AppCompatActivity {
     public void onBtnUploadPhoto_Clicked (View caller){
         Intent intent = new Intent(this, AddPhotoActivity.class);
         intent.putExtra("User", user);
+        startActivity(intent);
+    }
 
+    public void onBtnOwnProfile_Clicked (View caller){
+        Intent intent = new Intent(this, OwnProfiileActivity.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 }

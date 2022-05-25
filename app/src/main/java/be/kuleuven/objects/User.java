@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class User implements Parcelable {
 
     // constructor syntax -- important
     public static boolean exists = false;
-    String[] keys = {"name", "password", "profilePicture", "birthday", "gender", "link", "location", "email"};
+    String[] keys = {"name", "password", "profilePicture", "birthday", "gender", "link", "location", "email", "userSince"};
     Integer id;
     Map<String, String> info = new HashMap<>();
 
@@ -56,7 +57,6 @@ public class User implements Parcelable {
         }
     };
 
-
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(getId());
@@ -68,6 +68,7 @@ public class User implements Parcelable {
         out.writeString(getLink());
         out.writeString(getLocation());
         out.writeString(getEmail());
+        out.writeString(getUserSince());
     }
 
     public void setExists(boolean exists) {
@@ -109,6 +110,10 @@ public class User implements Parcelable {
         return info.get("password") == null ? "password" : info.get("password");
     }
 
+    public String getUserSince() {
+        System.out.println(this);
+        return info.get("userSince") == null ? "userSince" : info.get("userSince");
+    }
 
     public void setName(String name) {
         info.put("name", name);

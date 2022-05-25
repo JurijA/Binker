@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import be.kuleuven.objects.DataBaseHandler;
@@ -42,6 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onBtnRegister_Clicked(View caller) {
         List<User> listUsers = DataBaseHandler.userList;
+        Date date = new Date();
+        Timestamp currentTime = new Timestamp(date.getTime());
         Integer amountUsers = listUsers.size();
         String username = txtUsername.getText() + "";
         String password = sha256(txtPassword.getText() + "");
@@ -56,7 +60,8 @@ public class RegisterActivity extends AppCompatActivity {
                 "g",
                 "link",
                 "location",
-                email + "");
+                email,
+                currentTime + "");
         System.out.println(user);
         if (txtPassword.getText().length() >= 0) {
             if (!user.getName().equals("")) {

@@ -27,7 +27,7 @@ public class ChatActivity extends AppCompatActivity {
         friendship = getIntent().getParcelableExtra("Friendship");
         TxtFriendName = findViewById(R.id.TxtFriendName);
         TxtFriendName.setText(friendship.getB().getName());
-        new DataBaseHandler(this).get
+
     }
 
     public void onBtnBackToContacts_Clicked(View caller){

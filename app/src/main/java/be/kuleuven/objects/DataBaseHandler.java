@@ -155,7 +155,7 @@ public class DataBaseHandler {
         ProgressDialog progressDialog = new ProgressDialog(this.context);
         progressDialog.setMessage("Uploading, please wait...");
         progressDialog.show();
-        String url = SUBMIT_URL + ""
+        String url = SUBMIT_URL + "";
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -294,7 +294,8 @@ public class DataBaseHandler {
                                                 response.getJSONObject(i).get("userGender") + "",
                                                 response.getJSONObject(i).get("userLink") + "",
                                                 response.getJSONObject(i).get("userLocation") + "",
-                                                response.getJSONObject(i).get("userEmail") + ""
+                                                response.getJSONObject(i).get("userEmail") + "",
+                                                response.getJSONObject(i).get("userSince") + ""
                                         );
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -347,7 +348,8 @@ public class DataBaseHandler {
                                             response.getJSONObject(0).get("userGender") + "",
                                             response.getJSONObject(0).get("userLink") + "",
                                             response.getJSONObject(0).get("userLocation") + "",
-                                            response.getJSONObject(0).get("userEmail") + ""
+                                            response.getJSONObject(0).get("userEmail") + "",
+                                            response.getJSONObject(0).get("userSince") + ""
                                     );
 
                                 } catch (JSONException e) {
@@ -406,7 +408,8 @@ public class DataBaseHandler {
                                             response.getJSONObject(i).get("userGender") + "",
                                             response.getJSONObject(i).get("userLink") + "",
                                             response.getJSONObject(i).get("userLocation") + "",
-                                            response.getJSONObject(i).get("userEmail") + ""
+                                            response.getJSONObject(i).get("userEmail") + "",
+                                            response.getJSONObject(i).get("userSince") + ""
                                     );
                                     userList.add(user);
                                 }
@@ -443,7 +446,8 @@ public class DataBaseHandler {
                                 + user.getGender() + "" + "/"
                                 + user.getLocation() + "" + "/"
                                 + user.getLink() + "" + "/"
-                                + user.getEmail() + ""
+                                + user.getEmail() + "" + "/"
+                                + user.getUserSince() + ""
                         ,
                         null, null,
                         error -> Log.d("JSONError: ", error.getMessage(), error)
