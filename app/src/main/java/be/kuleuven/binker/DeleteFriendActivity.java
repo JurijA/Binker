@@ -13,12 +13,11 @@ import java.util.List;
 
 import be.kuleuven.interfaces.VolleyCallBack;
 import be.kuleuven.objects.DataBaseHandler;
-import be.kuleuven.objects.RecyclerAdapter;
 import be.kuleuven.objects.User;
 
 public class DeleteFriendActivity extends AppCompatActivity {
     public static RecyclerView recyclerView;
-    public static RecyclerAdapter adapter;
+    public static be.kuleuven.objects.RecyclerAdapter adapter;
     private final DataBaseHandler dataBaseHandler = new DataBaseHandler(this);
     private List<User> friends = new ArrayList<>();
     private User user;
@@ -34,7 +33,7 @@ public class DeleteFriendActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess() {
                         friends = DataBaseHandler.friends;
-                        adapter = new RecyclerAdapter(user, friends);
+                        adapter = new be.kuleuven.objects.RecyclerAdapter(user, friends);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(DeleteFriendActivity.this));
                     }
