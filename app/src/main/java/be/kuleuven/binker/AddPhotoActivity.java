@@ -21,8 +21,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import be.kuleuven.objects.DataBaseHandler;
+import be.kuleuven.objects.Photo;
 import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -88,7 +92,8 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onBtnUpload_Clicked(View caller) {
         ImageView PhotoToBeUploaded = findViewById(R.id.ImageUploadPhoto);
-
+        Date date = new Date();
+        Timestamp currentTime = new Timestamp(date.getTime());
         BitmapDrawable drawable = (BitmapDrawable) PhotoToBeUploaded.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         byte[] bitmapArray = DataBaseHandler.bitmapToByteArray(bitmap);
@@ -104,7 +109,9 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         }
         PhotoToBeUploaded.setImageBitmap(bitmap);
         System.out.println(DataBaseHandler.bitmapToByteArray(bitmap).length);
-        new DataBaseHandler(this).uploadPhoto(user, spinner.getSelectedItem().toString(), bitmap);
+        String beverage = spinner.getSelectedItem().toString();
+        Photo photo = new Photo(bitmap,user,beverage,currentTime,0);
+        new DataBaseHandler(this).uploadPhoto(photo);
 
         //Intent intent = new Intent(this, PhotoActivity.class);
         //startActivity(intent);
