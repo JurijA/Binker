@@ -44,6 +44,8 @@
         <activity android:name=".AddFriendsActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".DeleteFriendActivity" />
+        <activity android:name=".ChatActivity"/>
+        <activity android:name=".FriendInfoActivity"/>
         <activity
             android:name="be.kuleuven.objects.Capture"
             android:screenOrientation="fullSensor"

@@ -1,5 +1,6 @@
 package be.kuleuven.binker;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +17,25 @@ import java.util.List;
 import be.kuleuven.objects.Photo;
 import be.kuleuven.objects.User;
 
-public class RecyclerAdapterPhotos extends RecyclerView.Adapter<RecyclerAdapterPhotos.ViewHolder>{
+public class RecyclerAdapterPhotos extends RecyclerView.Adapter<RecyclerAdapterPhotos.ViewHolder> {
 
     public User user;
     public List<Photo> PhotosFromFriends = new ArrayList<>();
-
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.photo_item,parent,false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {}
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Photo pica = PhotosFromFriends.get(position);
+        holder.name.setText(pica.getUser().getName());
+        holder.photo.setImageBitmap(pica.getBitmapPhoto());
+    }
 
     @Override
     public int getItemCount() {
