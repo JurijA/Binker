@@ -81,7 +81,7 @@ public class FriendActivity extends AppCompatActivity {
     }
 
     public void onBtnOwnProfile_Clicked (View caller){
-        Intent intent = new Intent(this, OwnProfiileActivity.class);
+        Intent intent = new Intent(this, OwnProfileActivity.class);
         intent.putExtra("User", user);
         startActivity(intent);
     }
