@@ -113,6 +113,18 @@ public class DataBaseHandler {
                 .get(0);
     }
 
+    public void deleteUser(User user){
+        String url = SUBMIT_URL + "deleteUser/" +
+                user.getId() + "";
+        newRequestQueue(this.context).add(
+                new JsonArrayRequest(
+                        Request.Method.GET,
+                        url,
+                        null,
+                        null,
+                        null));
+    }
+
     public static String BitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream);

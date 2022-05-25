@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FriendInfoActivity">
+    tools:context=".OwnProfileActivity">
 
     <ImageButton
-        android:id="@+id/Btn_BackToFriendChat"
+        android:id="@+id/Btn_BackToFriends"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="10dp"
@@ -67,7 +67,8 @@
     <Button
         android:id="@+id/Btn_DeleteAccount"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:onClick="onBtnDeleteAccount_Clicked"
         android:text="DELETE ACCOUNT"
         android:textAlignment="center"
         android:textColor="@color/red"
