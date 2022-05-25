@@ -199,4 +199,18 @@ public class User implements Parcelable {
                 ", email='" + getEmail() + '\'' +
                 '}' + "\n";
     }
+
+    @NonNull
+    public String toStringNoPP() {
+        return "User{" +
+                "id='" + getId() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", password='" + getPassword() + '\'' +
+                ", birthday='" + getBirthday() + '\'' +
+                ", gender='" + getGender() + '\'' +
+                ", link='" + getLink() + '\'' +
+                ", location='" + getLocation() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                '}' + "\n";
+    }
 }

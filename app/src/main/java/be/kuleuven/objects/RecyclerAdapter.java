@@ -19,7 +19,7 @@ import be.kuleuven.binker.R;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.FriendViewHolder> {
     public static List<User> friendList;
     public User user;
-
+    private static final Integer USER_ICON_SIZE = 80;
     public RecyclerAdapter(User user, List<User> friendList) {
         this.user = user;
         RecyclerAdapter.friendList = friendList;
@@ -54,6 +54,8 @@ class FriendViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
     public FriendViewHolder(@NonNull View itemView) {
         super(itemView);
         imageView = itemView.findViewById(R.id.imageUser);
+        imageView.setMaxWidth(USER_ICON_SIZE);
+        imageView.setMaxHeight(USER_ICON_SIZE);
         txtName = itemView.findViewById(R.id.txtNameFriend);
         txtFavBeer = itemView.findViewById(R.id.txtFavouriteBeer);
         btnDelete = itemView.findViewById(R.id.btnDeleteFriend);

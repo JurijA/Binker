@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -29,7 +30,7 @@ import be.kuleuven.interfaces.VolleyCallBack;
 
 
 public class DataBaseHandler {
-    private static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
+    public static final String SUBMIT_URL = "https://studev.groept.be/api/a21pt122/";
     public static List<User> userList = new ArrayList<>();
     public static List<Friendship> friendShips = new ArrayList<>();
     public static List<User> friends = new ArrayList<>();
@@ -130,6 +131,7 @@ public class DataBaseHandler {
     }
 
     public static Bitmap resizeBitmap(Bitmap b, long width, long height) {
+
         return Bitmap.createScaledBitmap(b, (int) width, (int) height, false);
     }
 
@@ -143,20 +145,22 @@ public class DataBaseHandler {
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void uploadPhoto(User user, String beverage, Bitmap photo) {
+
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(now);
+
         String photo1 = DataBaseHandler.BitmapToBase64(photo);
 
         String url = SUBMIT_URL + "uploadPhoto/" + user.getId() + "/"
                 + currentTime + "/" + 0 + "/" + beverage + "/" + photo1 + "";
-        System.out.println("url = " + url.length());
+        System.out.println(url.length());
         Volley.newRequestQueue(this.context).add(
                 new JsonArrayRequest(
-                        Request.Method.POST,
+                        Request.Method.GET,
                         url,
                         null,
-                        null,
+                        response -> Toast.makeText(this.context, "Succefully added picture", Toast.LENGTH_SHORT).show(),
                         null)
         );
     }

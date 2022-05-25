@@ -1,5 +1,6 @@
 package be.kuleuven.binker;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,7 @@ import be.kuleuven.objects.DataBaseHandler;
 import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    public static Integer MAX_POST_SIZE = 100000;
 
     private User user;
     private final Size photo = new Size(250, 250);
@@ -85,28 +87,39 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         startActivity(intent);
     }
 
+    @SuppressLint("SimpleDateFormat")
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onBtnUpload_Clicked(View caller) {
         ImageView PhotoToBeUploaded = findViewById(R.id.ImageUploadPhoto);
 
         BitmapDrawable drawable = (BitmapDrawable) PhotoToBeUploaded.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
-        byte[] bitmapArray = DataBaseHandler.bitmapToByteArray(bitmap);
-        int size = bitmapArray.length;
-        double scale = 0.99;
-        while (size * 1.3 > 90_000) {
-            System.out.println("loading.." + size);
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int size = DataBaseHandler.bitmapToByteArray(bitmap).length;
+        bitmap = DataBaseHandler.resizeBitmap(bitmap,
+                Math.round(width * 0.02),
+                Math.round(height * 0.02));
+        double scale = 1;
+        while (size * 1.35 > 1500) {
+            System.out.println(size);
             bitmap = DataBaseHandler.resizeBitmap(bitmap,
-                    Math.round(bitmap.getWidth() * scale),
-                    Math.round(bitmap.getHeight() * scale));
+                    Math.round(width * scale),
+                    Math.round(height * scale));
             size = DataBaseHandler.bitmapToByteArray(bitmap).length;
             scale -= 0.01;
+
         }
+        //84182- 1.5->
+        System.out.println(DataBaseHandler.BitmapToBase64(bitmap).length());
+
         PhotoToBeUploaded.setImageBitmap(bitmap);
-        System.out.println(DataBaseHandler.bitmapToByteArray(bitmap).length);
-        new DataBaseHandler(this).uploadPhoto(user, spinner.getSelectedItem().toString(), bitmap);
+
+        new DataBaseHandler(this).uploadPhoto(user, "niks", bitmap);
+
 
         //Intent intent = new Intent(this, PhotoActivity.class);
+        //intent.putExtra("User",user);
         //startActivity(intent);
     }
 
