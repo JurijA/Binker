@@ -436,8 +436,8 @@ public class DataBaseHandler {
     public void addUser(User user) {
         newRequestQueue(this.context).add(
                 new JsonArrayRequest(
-                        Request.Method.GET,
-                        SUBMIT_URL + "addUser/"
+                        Request.Method.POST,
+                        SUBMIT_URL + "addUser"
                                 + user.getId() + "" + "/"
                                 + user.getName() + "" + "/"
                                 + user.getPassword() + "" + "/"

@@ -35,9 +35,18 @@ public class ChatMessage {
         this.day = day;
     }
 
-    public String getTime() {
-        return time;
+    public String getHourAndMinute() {
+        char[] hour_min = new char[5];
+        this.getDay().getChars(11, 16, hour_min, 0);
+        return String.valueOf(hour_min);
     }
+
+    public String getMonthAndDay() {
+        char[] month_day = new char[5];
+        this.getDay().getChars(0, 11, month_day, 0);
+        return String.valueOf(month_day);
+    }
+
 
     public void setTime(String time) {
         this.time = time;

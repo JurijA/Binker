@@ -30,7 +30,7 @@ import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-
+    private final Integer IMAGE_WIDTH = 200;
     private User user;
     private Spinner spinner;
     @Override
@@ -61,7 +61,7 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
             try {
                 InputStream inputStream = getContentResolver().openInputStream(data.getData());
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                imageView.setImageBitmap(getResizedBitmap(bitmap, 200));
+                imageView.setImageBitmap(getResizedBitmap(bitmap, IMAGE_WIDTH));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
