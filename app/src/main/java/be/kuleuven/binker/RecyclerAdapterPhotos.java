@@ -10,7 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import be.kuleuven.objects.Photo;
+import be.kuleuven.objects.User;
+
 public class RecyclerAdapterPhotos extends RecyclerView.Adapter<RecyclerAdapterPhotos.ViewHolder>{
+
+    public User user;
+    public List<Photo> PhotosFromFriends = new ArrayList<>();
+
 
     @NonNull
     @Override
@@ -26,7 +36,7 @@ public class RecyclerAdapterPhotos extends RecyclerView.Adapter<RecyclerAdapterP
 
     @Override
     public int getItemCount() {
-        return 20;
+        return PhotosFromFriends.size();
     }
 
 
