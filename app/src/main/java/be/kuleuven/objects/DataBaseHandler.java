@@ -37,6 +37,7 @@ public class DataBaseHandler {
     public static Integer USER_AMOUNT;
     public static User user = new User();
     public static User userFromId = new User();
+    public static List<Photo> photosOfFriends = new ArrayList<>();
     public Context context;
 
     public DataBaseHandler(Context context) {
@@ -131,7 +132,6 @@ public class DataBaseHandler {
     }
 
     public static Bitmap resizeBitmap(Bitmap b, long width, long height) {
-
         return Bitmap.createScaledBitmap(b, (int) width, (int) height, false);
     }
 
@@ -144,17 +144,12 @@ public class DataBaseHandler {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void uploadPhoto(User user, String beverage, Bitmap photo) {
+    public void uploadPhoto(Photo photo) {
+        String encodedString = DataBaseHandler.BitmapToBase64(photo.getBitmapPhoto());
 
-        Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = sdf.format(now);
-
-        String photo1 = DataBaseHandler.BitmapToBase64(photo);
-
-        String url = SUBMIT_URL + "uploadPhoto/" + user.getId() + "/"
-                + currentTime + "/" + 0 + "/" + beverage + "/" + photo1 + "";
-        System.out.println(url.length());
+        String url = SUBMIT_URL + "uploadPhoto/" + photo.getUser().getId() + "/"
+                + photo.getTimestamp() + "/" + 0 + "/" + photo.getBeverage() + "/" + encodedString + "";
+        System.out.println("url = " + url.length());
         Volley.newRequestQueue(this.context).add(
                 new JsonArrayRequest(
                         Request.Method.GET,

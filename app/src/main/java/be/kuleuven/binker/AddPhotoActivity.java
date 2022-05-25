@@ -22,8 +22,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import be.kuleuven.objects.DataBaseHandler;
+import be.kuleuven.objects.Photo;
 import be.kuleuven.objects.User;
 
 public class AddPhotoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -87,7 +91,6 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         startActivity(intent);
     }
 
-    @SuppressLint("SimpleDateFormat")
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onBtnUpload_Clicked(View caller) {
         ImageView PhotoToBeUploaded = findViewById(R.id.ImageUploadPhoto);
@@ -104,8 +107,8 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         while (size * 1.35 > 1500) {
             System.out.println(size);
             bitmap = DataBaseHandler.resizeBitmap(bitmap,
-                    Math.round(width * scale),
-                    Math.round(height * scale));
+                    Math.round(bitmap.getWidth() * scale),
+                    Math.round(bitmap.getHeight() * scale));
             size = DataBaseHandler.bitmapToByteArray(bitmap).length;
             scale -= 0.01;
 
@@ -114,9 +117,10 @@ public class AddPhotoActivity extends AppCompatActivity implements AdapterView.O
         System.out.println(DataBaseHandler.BitmapToBase64(bitmap).length());
 
         PhotoToBeUploaded.setImageBitmap(bitmap);
-
-        new DataBaseHandler(this).uploadPhoto(user, "niks", bitmap);
-
+        System.out.println(DataBaseHandler.bitmapToByteArray(bitmap).length);
+        String beverage = spinner.getSelectedItem().toString();
+        Photo photo = new Photo(bitmap,user,beverage,currentTime,0);
+        new DataBaseHandler(this).uploadPhoto(photo);
 
         //Intent intent = new Intent(this, PhotoActivity.class);
         //intent.putExtra("User",user);
