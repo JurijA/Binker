@@ -55,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
                 getFreeId(amountUsers),
                 username,
                 password + "",
-                "pic",
+                "+EAvAgj4QCABv9IRjSAiXgqXLAH5YQPyN9Ja9edANxAAAAAElFTkSuQmCC",
                 "birthday",
                 "g",
                 "link",

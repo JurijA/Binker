@@ -114,7 +114,7 @@ public class DataBaseHandler {
     }
 
     public void deleteUser(User user){
-        String url = SUBMIT_URL + "deleteFriendShip/" +
+        String url = SUBMIT_URL + "deleteUser/" +
                 user.getId() + "";
         newRequestQueue(this.context).add(
                 new JsonArrayRequest(
